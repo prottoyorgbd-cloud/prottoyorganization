@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel | প্রত্যয়</title>
+  <link rel="icon" href="prottoy-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">মূল কনটেন্টে যান</a>
+
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <span>প্রত্যয় অ্যাডমিন প্যানেল</span>
+      <span>শুধু অনুমোদিত ব্যক্তির জন্য</span>
+    </div>
+  </div>
+
+  <header class="site-header" id="siteHeader">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html#home" aria-label="প্রত্যয় হোম">
+        <img class="spin-logo" src="prottoy-logo.png" alt="প্রত্যয় সংগঠনের লোগো">
+        <span>
+          <strong>প্রত্যয়</strong>
+          <small>সংকল্প পাশে থাকার</small>
+        </span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="মেনু খুলুন" aria-expanded="false" aria-controls="mainNav">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="main-nav" id="mainNav" aria-label="প্রধান নেভিগেশন">
+        <a href="index.html#home">হোম</a>
+        <a href="donors.html">রক্তদাতা</a>
+        <a href="blood-request.html">রক্তের আবেদন</a>
+        <a href="committee.html">কমিটি</a>
+        <a href="performance.html">পারফরম্যান্স</a>
+        <button class="btn btn-primary nav-login-btn" id="adminLogout" type="button">লগআউট</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="section">
+      <div class="container">
+        <div class="section-heading center-heading">
+          <span class="eyebrow">Admin Panel</span>
+          <h2>প্রত্যয় সংগঠনের এডমিন প্যানেল</h2>
+          <p>নোটিশ, রক্তদাতা, রক্তের আবেদন, কমিটি ও পারফরম্যান্স ডেটা এখান থেকে নিয়ন্ত্রণ করুন।</p>
+        </div>
+
+        <div class="form-card" id="adminLoginSection">
+          <form id="adminLoginForm" novalidate>
+            <label class="field">
+              <span>মোবাইল নম্বর *</span>
+              <input type="tel" name="phone" placeholder="01XXXXXXXXX">
+              <small class="field-error" hidden></small>
+            </label>
+            <label class="field">
+              <span>পাসওয়ার্ড *</span>
+              <input type="password" name="password">
+              <small class="field-error" hidden></small>
+            </label>
+            <div class="form-footer">
+              <button class="btn btn-primary" type="submit">এডমিন লগইন</button>
+              <p class="form-success" id="adminLoginMsg" hidden></p>
+            </div>
+          </form>
+        </div>
+
+        <div id="adminPanel" hidden>
+          <div class="admin-tabs">
+            <button type="button" class="admin-tab active" data-target="admin-notices">নোটিশ</button>
+            <button type="button" class="admin-tab" data-target="admin-donors">রক্তদাতা</button>
+            <button type="button" class="admin-tab" data-target="admin-requests">রক্তের আবেদন</button>
+            <button type="button" class="admin-tab" data-target="admin-committee">কমিটি</button>
+            <button type="button" class="admin-tab" data-target="admin-performance">পারফরম্যান্স</button>
+          </div>
+
+          <!-- Notices panel -->
+          <section id="admin-notices" class="admin-panel-section">
+            <div class="form-card">
+              <h3>নতুন নোটিশ যোগ করুন</h3>
+              <form id="adminNoticeForm" class="form-grid single" novalidate>
+                <label class="field">
+                  <span>শিরোনাম *</span>
+                  <input type="text" name="title">
+                  <small class="field-error" hidden></small>
+                </label>
+                <label class="field">
+                  <span>ক্যাটাগরি</span>
+                  <input type="text" name="category" placeholder="যেমন: সভা, ক্যাম্পেইন, জরুরি">
+                  <small class="field-error" hidden></small>
+                </label>
+                <label class="field">
+                  <span>তারিখ</span>
+                  <input type="date" name="date">
+                  <small class="field-error" hidden></small>
+                </label>
+                <label class="field">
+                  <span>বর্ণনা</span>
+                  <textarea name="content" rows="3"></textarea>
+                  <small class="field-error" hidden></small>
+                </label>
+                <label class="field checkbox-field">
+                  <span class="checkbox-row">
+                    <input type="checkbox" name="important">
+                    এটি গুরুত্বপূর্ণ নোটিশ
+                  </span>
+                  <small class="field-error" hidden></small>
+                </label>
+                <div class="form-footer">
+                  <button class="btn btn-primary" type="submit">নোটিশ সংরক্ষণ</button>
+                </div>
+              </form>
+            </div>
+
+            <div class="form-card" style="margin-top:24px;">
+              <h3 style="margin-top:0;">নোটিশ তালিকা</h3>
+              <div class="admin-table-wrap">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>শিরোনাম</th>
+                      <th>ক্যাটাগরি</th>
+                      <th>তারিখ</th>
+                      <th>অ্যাকশন</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminNoticeTbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- Donors panel -->
+          <section id="admin-donors" class="admin-panel-section" hidden>
+            <div class="form-card">
+              <h3 style="margin-top:0;">রক্তদাতা তালিকা (নিবন্ধিত সকল)</h3>
+              <p style="color:#607267; font-size:.86rem;">
+                নতুন রক্তদাতা পাবলিক তালিকায় দেখানোর আগে "অনুমোদন" দিন।
+              </p>
+              <div class="admin-table-wrap">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>নাম</th>
+                      <th>গ্রুপ</th>
+                      <th>এলাকা</th>
+                      <th>মোবাইল</th>
+                      <th>স্ট্যাটাস</th>
+                      <th>অ্যাকশন</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminDonorTbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- Requests panel -->
+          <section id="admin-requests" class="admin-panel-section" hidden>
+            <div class="form-card">
+              <h3 style="margin-top:0;">রক্তের আবেদন তালিকা</h3>
+              <p style="color:#607267; font-size:.86rem;">
+                প্রয়োজনীয়তার ভিত্তিতে "স্ট্যাটাস" আপডেট করুন (pending / fulfilled / cancelled)।
+              </p>
+              <div class="admin-table-wrap">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>রোগীর নাম</th>
+                      <th>গ্রুপ</th>
+                      <th>ব্যাগ</th>
+                      <th>তারিখ</th>
+                      <th>হাসপাতাল</th>
+                      <th>স্ট্যাটাস</th>
+                      <th>অ্যাকশন</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminRequestTbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- Committee panel -->
+          <section id="admin-committee" class="admin-panel-section" hidden>
+            <div class="form-card">
+              <h3 style="margin-top:0;">কমিটি সদস্য যোগ করুন</h3>
+              <form id="adminCommitteeForm" class="form-grid single" novalidate>
+                <label class="field">
+                  <span>নাম *</span>
+                  <input type="text" name="name">
+                  <small class="field-error" hidden></small>
+                </label>
+                <label class="field">
+                  <span>পদবী *</span>
+                  <input type="text" name="position" placeholder="যেমন: পরিচালক, সহ-পরিচালক">
+                  <small class="field-error" hidden></small>
+                </label>
+                <label class="field">
+                  <span>ছবির লিংক (ঐচ্ছিক)</span>
+                  <input type="url" name="photoUrl" placeholder="https://...">
+                  <small class="field-error" hidden></small>
+                </label>
+                <label class="field">
+                  <span>দায়িত্ব গ্রহণের তারিখ (ঐচ্ছিক)</span>
+                  <input type="date" name="since">
+                  <small class="field-error" hidden></small>
+                </label>
+                <div class="form-footer">
+                  <button class="btn btn-primary" type="submit">কমিটিতে যুক্ত করুন</button>
+                </div>
+              </form>
+            </div>
+
+            <div class="form-card" style="margin-top:24px;">
+              <h3 style="margin-top:0;">কমিটি সদস্য তালিকা</h3>
+              <div class="admin-table-wrap">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>নাম</th>
+                      <th>পদবী</th>
+                      <th>ছবি</th>
+                      <th>অ্যাকশন</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminCommitteeTbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- Performance panel -->
+          <section id="admin-performance" class="admin-panel-section" hidden>
+            <div class="form-card">
+              <h3 style="margin-top:0;">পারফরম্যান্স সেটিংস</h3>
+              <form id="adminPerfSettingsForm" class="form-grid single" novalidate>
+                <label class="field">
+                  <span>কমিটির নাম *</span>
+                  <input type="text" name="committeeName" placeholder="যেমন: তৃতীয় কার্যনির্বাহী কমিটি">
+                  <small class="field-error" hidden></small>
+                </label>
+                <label class="field">
+                  <span>মোট মাস (এই কমিটির মেয়াদ)</span>
+                  <input type="number" name="totalMonths" min="1">
+                  <small class="field-error" hidden></small>
+                </label>
+                <label class="field">
+                  <span>মোট প্রোগ্রাম (এই কমিটি চলাকালীন)</span>
+                  <input type="number" name="totalPrograms" min="0">
+                  <small class="field-error" hidden></small>
+                </label>
+                <div class="form-footer">
+                  <button class="btn btn-primary" type="submit">সেটিংস সেভ করুন</button>
+                </div>
+              </form>
+            </div>
+
+            <div class="form-card" style="margin-top:24px;">
+              <h3 style="margin-top:0;">সদস্যভিত্তিক পারফরম্যান্স এন্ট্রি</h3>
+              <form id="adminPerfMemberForm" class="form-grid single" novalidate>
+                <label class="field">
+                  <span>নাম *</span>
+                  <input type="text" name="name">
+                  <small class="field-error" hidden></small>
+                </label>
+                <label class="field">
+                  <span>পদ *</span>
+                  <input type="text" name="position" placeholder="যেমন: সদস্য, সম্পাদক">
+                  <small class="field-error" hidden></small>
+                </label>
+                <label class="field">
+                  <span>কত মাস মাসিক ফি প্রদান করেছেন?</span>
+                  <input type="number" name="monthsPaid" min="0">
+                  <small class="field-error" hidden></small>
+                </label>
+                <label class="field">
+                  <span>কতটি প্রোগ্রামে উপস্থিত / আয়োজন / আর্থিক সহায়তা দিয়েছেন?</span>
+                  <input type="number" name="programs" min="0">
+                  <small class="field-error" hidden></small>
+                </label>
+                <label class="field">
+                  <span>কতজন নতুন সদস্য যুক্ত করেছেন?</span>
+                  <input type="number" name="membersAdded" min="0">
+                  <small class="field-error" hidden></small>
+                </label>
+                <div class="form-footer">
+                  <button class="btn btn-primary" type="submit">ডাটা সংরক্ষণ</button>
+                </div>
+              </form>
+            </div>
+
+            <div class="form-card" style="margin-top:24px;">
+              <h3 style="margin-top:0;">সংরক্ষিত পারফরম্যান্স ডাটা</h3>
+              <div class="admin-table-wrap">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>নাম</th>
+                      <th>পদ</th>
+                      <th>ফি প্রদান (মাস)</th>
+                      <th>প্রোগ্রাম</th>
+                      <th>নতুন সদস্য (২০%)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminPerfTbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer style="text-align:center; padding:20px; color:#666;">
+    <p>© <span id="currentYear"></span> Prottoy Org. All Rights Reserved.
+      <a href="admin.html" style="color:inherit; margin-left:10px; opacity:.6;" title="Admin Panel">
+        <i class="fa-solid fa-lock"></i>
+      </a>
+    </p>
+  </footer>
+
+  <button class="back-to-top" id="backToTop" aria-label="উপরে যান">↑</button>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>পারফরম্যান্স রিপোর্ট | প্রত্যয়</title>
+  <link rel="icon" href="prottoy-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">মূল কনটেন্টে যান</a>
+
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <span>প্রত্যয়—পারফরম্যান্স রিপোর্ট</span>
+      <span>কমিটি ভিত্তিক মূল্যায়ন</span>
+    </div>
+  </div>
+
+  <header class="site-header" id="siteHeader">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html#home" aria-label="প্রত্যয় হোম">
+        <img class="spin-logo" src="prottoy-logo.png" alt="প্রত্যয় সংগঠনের লোগো">
+        <span>
+          <strong>প্রত্যয়</strong>
+          <small>সংকল্প পাশে থাকার</small>
+        </span>
+      </a>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="মেনু খুলুন" aria-expanded="false" aria-controls="mainNav">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="main-nav" id="mainNav" aria-label="প্রধান নেভিগেশন">
+        <a href="index.html#home">হোম</a>
+        <a href="index.html#about">সম্পর্কে</a>
+        <a href="index.html#activities">কার্যক্রম</a>
+        <a href="index.html#notices">নোটিশ</a>
+        <a href="donors.html">রক্তদাতা খুঁজুন</a>
+        <a href="blood-request.html">রক্তের আবেদন</a>
+        <a href="performance.html">পারফরম্যান্স</a>
+        <a href="index.html#constitution">গঠনতন্ত্র</a>
+        <a href="index.html#contact">যোগাযোগ</a>
+        <button class="btn btn-primary nav-login-btn" id="loginBtn" type="button">লগইন</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="section" id="performance">
+      <div class="container">
+        <div class="section-heading center-heading">
+          <span class="eyebrow">পারফরম্যান্স</span>
+          <h2>কমিটি সদস্যদের পারফরম্যান্স রিপোর্ট</h2>
+          <p id="perfSettingsText"></p>
+        </div>
+
+        <div class="form-card">
+          <p id="perfSummary" style="margin-top:0; color:#607267;"></p>
+          <div class="performance-table-wrap">
+            <table class="performance-table">
+              <thead>
+                <tr>
+                  <th>নাম</th>
+                  <th>পদ</th>
+                  <th>ওভারঅল পারফরম্যান্স</th>
+                  <th>মাসিক ফি (প্রদত্ত / মোট)</th>
+                  <th>প্রোগ্রামে অংশগ্রহণ</th>
+                  <th>নতুন সদস্য যুক্ত</th>
+                </tr>
+              </thead>
+              <tbody id="perfTableBody"></tbody>
+            </table>
+          </div>
+          <p style="margin-top:16px; font-size:.82rem; color:#607267;">
+            নোট: পারফরম্যান্স হিসাব = মাসিক ফি (৫০%) + প্রোগ্রামে অংশগ্রহণ (৩০%) + নতুন সদস্য যুক্তকরণ (২০%)।
+            সব ডাটা এডমিন প্যানেল থেকে আপডেট করা হয়।
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img class="spin-logo" src="prottoy-logo.png" alt="">
+        <div>
+          <strong>প্রত্যয়</strong>
+          <p>সংকল্প পাশে থাকার</p>
+        </div>
+      </div>
+      <div>
+        <h3>ঠিকানা</h3>
+        <p>নাঙ্গলকোট উপজেলা<br>কুমিল্লা, বাংলাদেশ</p>
+      </div>
+      <div>
+        <h3>গুরুত্বপূর্ণ লিংক</h3>
+        <a href="index.html#notices">নোটিশ বোর্ড</a>
+        <a href="donors.html">রক্তদাতা তালিকা</a>
+        <a href="blood-request.html">রক্তের আবেদন</a>
+        <a href="performance.html">পারফরম্যান্স</a>
+        <a href="assets/docs/prottoy-constitution-2nd-edition.pdf" target="_blank" rel="noopener">গঠনতন্ত্র</a>
+      </div>
+      <div>
+        <h3>যোগাযোগ</h3>
+        <p>যেকোনো প্রয়োজনে <a class="inline-link" href="index.html#contact">যোগাযোগ ফর্ম</a> ব্যবহার করুন।</p>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© <span id="currentYear"></span> প্রত্যয়। সর্বস্বত্ব সংরক্ষিত।</span>
+      <span>
+        <a href="admin.html" class="inline-link" title="Admin Panel">
+          <i class="fa-solid fa-lock"></i> এডমিন প্যানেল
+        </a>
+      </span>
+    </div>
+  </footer>
+
+  <!-- Login Modal -->
+  <div class="modal" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authTitle" hidden>
+    <div class="modal-card">
+      <button class="modal-close" id="authClose" type="button" aria-label="বন্ধ করুন">✕</button>
+      <h3 id="authTitle">অ্যাকাউন্ট</h3>
+      <div class="auth-tabs" role="tablist">
+        <button class="auth-tab active" id="tabLogin" type="button" role="tab" aria-selected="true">লগইন</button>
+        <button class="auth-tab" id="tabRegister" type="button" role="tab" aria-selected="false">নিবন্ধন</button>
+      </div>
+
+      <form id="loginForm" novalidate>
+        <label class="field">
+          <span>মোবাইল নম্বর *</span>
+          <input type="tel" name="phone" placeholder="01XXXXXXXXX" autocomplete="tel">
+          <small class="field-error" hidden></small>
+        </label>
+        <label class="field">
+          <span>পাসওয়ার্ড *</span>
+          <input type="password" name="password" autocomplete="current-password">
+          <small class="field-error" hidden></small>
+        </label>
+        <div class="form-footer">
+          <button class="btn btn-primary full" type="submit">লগইন করুন</button>
+          <p class="form-success" id="loginMsg" hidden></p>
+        </div>
+      </form>
+
+      <form id="registerForm" hidden novalidate>
+        <label class="field">
+          <span>পূর্ণ নাম *</span>
+          <input type="text" name="name" autocomplete="name">
+          <small class="field-error" hidden></small>
+        </label>
+        <label class="field">
+          <span>মোবাইল নম্বর *</span>
+          <input type="tel" name="phone" placeholder="01XXXXXXXXX" autocomplete="tel">
+          <small class="field-error" hidden></small>
+        </label>
+        <label class="field">
+          <span>পাসওয়ার্ড * <em>(কমপক্ষে ৬ অক্ষর)</em></span>
+          <input type="password" name="password" autocomplete="new-password">
+          <small class="field-error" hidden></small>
+        </label>
+        <label class="field">
+          <span>পাসওয়ার্ড নিশ্চিত করুন *</span>
+          <input type="password" name="confirm" autocomplete="new-password">
+          <small class="field-error" hidden></small>
+        </label>
+        <div class="form-footer">
+          <button class="btn btn-primary full" type="submit">নিবন্ধন করুন</button>
+          <p class="form-success" id="registerMsg" hidden></p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="backToTop" aria-label="উপরে যান">↑</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
