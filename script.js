@@ -725,7 +725,7 @@
   }
 
   /* ---------- Performance page (public) ---------- */
-  function initPerformancePage() {
+function initPerformancePage() {
   const tableBody = $("#perfTableBody");
   const summaryEl = $("#perfSummary");
   const settingsEl = $("#perfSettingsText");
@@ -741,6 +741,12 @@
 
   const settings = getPerfSettings();
   const members = getPerfMembers();
+
+  // 🔹 নতুন যোগ: উপরের দুইটা বক্সে (মাস + প্রোগ্রাম) ভ্যালু বসানো
+  const monthsBox = $("#perfTotalMonthsBox");
+  const programsBox = $("#perfTotalProgramsBox");
+  if (monthsBox) monthsBox.textContent = settings.totalMonths || 0;
+  if (programsBox) programsBox.textContent = settings.totalPrograms || 0;
 
   // উপরের লেখা (এডমিন যেটা সেট করেছে, নাহলে ডিফল্ট)
   if (settingsEl) {
