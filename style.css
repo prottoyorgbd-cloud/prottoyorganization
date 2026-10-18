@@ -1105,3 +1105,77 @@ section { scroll-margin-top: 95px; }
     white-space: normal;
   }
 }
+
+/* ==== Performance page : top stat boxes ==== */
+.perf-stats {
+  margin: 16px auto 0;
+  max-width: 640px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.perf-stat-box {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 12px 18px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  border-top: 3px solid #0f9d58; /* আপনার সবুজ টোন */
+}
+
+.perf-stat-label {
+  font-size: 14px;
+  color: #64748b;
+}
+
+.perf-stat-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f9d58;
+}
+
+/* ==== Performance page : self result cards ==== */
+.perf-result-grid {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 16px;
+}
+
+.perf-result-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px 18px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  text-align: center;
+}
+
+.perf-result-main {
+  grid-column: 1 / -1;           /* ওপরের সারি জুড়ে বড় বক্স */
+  border-top: 3px solid #0f9d58;
+}
+
+.perf-result-label {
+  font-size: 14px;
+  color: #64748b;
+}
+
+.perf-result-value {
+  margin-top: 4px;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #0f172a;
+}
+
+.perf-result-main .perf-result-value {
+  font-size: 32px;
+  color: #0f9d58;
+}
+
+@media (max-width: 640px) {
+  .perf-result-main .perf-result-value {
+    font-size: 28px;
+  }
+}
