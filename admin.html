@@ -239,30 +239,35 @@
 
           <!-- Performance panel -->
           <section id="admin-performance" class="admin-panel-section" hidden>
-            <div class="form-card">
-              <h3 style="margin-top:0;">পারফরম্যান্স সেটিংস</h3>
-              <form id="adminPerfSettingsForm" class="form-grid single" novalidate>
-                <label class="field">
-                  <span>কমিটির নাম *</span>
-                  <input type="text" name="committeeName" placeholder="যেমন: তৃতীয় কার্যনির্বাহী কমিটি">
-                  <small class="field-error" hidden></small>
-                </label>
-                <label class="field">
-                  <span>মোট মাস (এই কমিটির মেয়াদ)</span>
-                  <input type="number" name="totalMonths" min="1">
-                  <small class="field-error" hidden></small>
-                </label>
-                <label class="field">
-                  <span>মোট প্রোগ্রাম (এই কমিটি চলাকালীন)</span>
-                  <input type="number" name="totalPrograms" min="0">
-                  <small class="field-error" hidden></small>
-                </label>
-                <div class="form-footer">
-                  <button class="btn btn-primary" type="submit">সেটিংস সেভ করুন</button>
-                </div>
-              </form>
-            </div>
-
+           <div class="form-card">
+  <h3 style="margin-top:0;">পারফরম্যান্স সেটিংস</h3>
+  <form id="adminPerfSettingsForm" class="form-grid single" novalidate>
+    <label class="field">
+      <span>কমিটির নাম *</span>
+      <input type="text" name="committeeName" placeholder="যেমন: তৃতীয় কার্যনির্বাহী কমিটি">
+      <small class="field-error" hidden></small>
+    </label>
+    <label class="field">
+      <span>এই কমিটি গঠনের পর থেকে অতিবাহিত মাস সংখ্যা *</span>
+      <input type="number" name="totalMonths" min="1">
+      <small class="field-error" hidden></small>
+    </label>
+    <label class="field">
+      <span>এই কমিটি চলাকালীন এ পর্যন্ত মোট প্রোগ্রাম সংখ্যা *</span>
+      <input type="number" name="totalPrograms" min="0">
+      <small class="field-error" hidden></small>
+    </label>
+    <label class="field form-span">
+      <span>ফর্মের উপরে দেখানোর জন্য সংক্ষিপ্ত বার্তা (ঐচ্ছিক)</span>
+      <textarea name="introText" rows="2"
+        placeholder="যেমন: এই কমিটি ১২ মাস মেয়াদে ৬টি প্রোগ্রাম সম্পন্ন করেছে। নিচের ঘরে নিজের তথ্য দিয়ে পারফরম্যান্স বের করে নিন।"></textarea>
+      <small class="field-error" hidden></small>
+    </label>
+    <div class="form-footer">
+      <button class="btn btn-primary" type="submit">সেটিংস সেভ করুন</button>
+    </div>
+  </form>
+</div>
             <div class="form-card" style="margin-top:24px;">
               <h3 style="margin-top:0;">সদস্যভিত্তিক পারফরম্যান্স এন্ট্রি</h3>
               <form id="adminPerfMemberForm" class="form-grid single" novalidate>
