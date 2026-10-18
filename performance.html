@@ -51,40 +51,79 @@
     </div>
   </header>
 
-  <main id="main-content">
-    <section class="section" id="performance">
-      <div class="container">
-        <div class="section-heading center-heading">
-          <span class="eyebrow">পারফরম্যান্স</span>
-          <h2>কমিটি সদস্যদের পারফরম্যান্স রিপোর্ট</h2>
-          <p id="perfSettingsText"></p>
+ <main id="main-content">
+  <section class="section" id="performance">
+    <div class="container">
+      <div class="section-heading center-heading">
+        <span class="eyebrow">পারফরম্যান্স</span>
+        <h2>কমিটি সদস্যদের পারফরম্যান্স</h2>
+        <p id="perfSettingsText"></p>
+      </div>
+
+      <!-- 🧮 নিজস্ব পারফরম্যান্স ক্যালকুলেটর -->
+      <form class="form-card" id="perfSelfForm" novalidate>
+        <p id="perfIntroText" style="margin-top:0; color:#607267;"></p>
+
+        <div class="form-grid single">
+          <label class="field">
+            <span>আপনি কয় মাস মাসিক ফি প্রদান করেছেন? *</span>
+            <input type="number" name="selfMonthsPaid" min="0" placeholder="যেমন: ৮">
+            <small class="field-error" hidden></small>
+          </label>
+          <label class="field">
+            <span>এই কমিটিতে আপনি কতটি প্রোগ্রামে উপস্থিত / আয়োজন / আর্থিক সহায়তা দিয়েছেন? *</span>
+            <input type="number" name="selfPrograms" min="0" placeholder="যেমন: ৩">
+            <small class="field-error" hidden></small>
+          </label>
+          <label class="field">
+            <span>আপনার প্রচেষ্টায় কতজন নতুন সদস্য প্রত্যয়ে যুক্ত হয়েছে? *</span>
+            <input type="number" name="selfMembersAdded" min="0" placeholder="যেমন: ২">
+            <small class="field-error" hidden></small>
+          </label>
         </div>
 
-        <div class="form-card">
-          <p id="perfSummary" style="margin-top:0; color:#607267;"></p>
-          <div class="performance-table-wrap">
-            <table class="performance-table">
-              <thead>
-                <tr>
-                  <th>নাম</th>
-                  <th>পদ</th>
-                  <th>ওভারঅল পারফরম্যান্স</th>
-                  <th>মাসিক ফি (প্রদত্ত / মোট)</th>
-                  <th>প্রোগ্রামে অংশগ্রহণ</th>
-                  <th>নতুন সদস্য যুক্ত</th>
-                </tr>
-              </thead>
-              <tbody id="perfTableBody"></tbody>
-            </table>
-          </div>
-          <p style="margin-top:16px; font-size:.82rem; color:#607267;">
-            নোট: পারফরম্যান্স হিসাব = মাসিক ফি (৫০%) + প্রোগ্রামে অংশগ্রহণ (৩০%) + নতুন সদস্য যুক্তকরণ (২০%)।
-            সব ডাটা এডমিন প্যানেল থেকে আপডেট করা হয়।
+        <div class="form-footer">
+          <button class="btn btn-primary" type="submit">আমার পারফরম্যান্স দেখুন</button>
+        </div>
+
+        <div id="perfSelfOutput" class="perf-output" hidden>
+          <h3 style="margin:0 0 6px;">আপনার পারফরম্যান্স ফলাফল</h3>
+          <p>মাসিক ফি পারফরম্যান্স: <strong id="perfFeePercent">০%</strong></p>
+          <p>প্রোগ্রাম পারফরম্যান্স: <strong id="perfProgPercent">০%</strong></p>
+          <p>ওভারঅল পারফরম্যান্স: <strong id="perfOverallPercent">০%</strong></p>
+          <p style="font-size:.8rem; color:#607267; margin-top:8px;">
+            নোট: হিসাব করা হয় &mdash; মাসিক ফি ৫০%, প্রোগ্রাম ৩০% এবং নতুন সদস্য যুক্তকরণ ২০% ওজন ধরে।
+            নতুন সদস্য অংশে প্রতি সদস্যের জন্য সর্বোচ্চ ৪ পয়েন্ট (৫ বা ততোধিক সদস্যে পূর্ণ ২০ পয়েন্ট) ধরা হয়েছে।
           </p>
         </div>
+      </form>
+
+      <!-- চাইলে নিচে অফিসিয়াল টেবিলও রাখতে পারেন (আগের মত) -->
+      <div class="form-card" style="margin-top:26px;">
+        <p id="perfSummary" style="margin-top:0; color:#607267;"></p>
+        <div class="performance-table-wrap">
+          <table class="performance-table">
+            <thead>
+              <tr>
+                <th>নাম</th>
+                <th>পদ</th>
+                <th>ওভারঅল পারফরম্যান্স</th>
+                <th>মাসিক ফি (প্রদত্ত / মোট)</th>
+                <th>প্রোগ্রামে অংশগ্রহণ</th>
+                <th>নতুন সদস্য যুক্ত</th>
+              </tr>
+            </thead>
+            <tbody id="perfTableBody"></tbody>
+          </table>
+        </div>
+        <p style="margin-top:16px; font-size:.82rem; color:#607267;">
+          নোট: এই টেবিলের তথ্য এডমিন প্যানেল থেকে সংরক্ষণ করা হয়। ওভারঅল পারফরম্যান্স = ফি (৫০%) + প্রোগ্রাম (৩০%) +
+          নতুন সদস্য (২০%)।
+        </p>
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
+</main>
 
   <footer class="site-footer">
     <div class="container footer-grid">
