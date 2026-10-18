@@ -1310,26 +1310,29 @@
     const memberForm = $("#adminPerfMemberForm");
     const currentSettings = getPerfSettings();
 
-    if (settingsForm) {
-      settingsForm.committeeName.value = currentSettings.committeeName || "";
-      settingsForm.totalMonths.value = currentSettings.totalMonths || 0;
-      settingsForm.totalPrograms.value = currentSettings.totalPrograms || 0;
+if (settingsForm) {
+  settingsForm.committeeName.value = currentSettings.committeeName || "";
+  settingsForm.totalMonths.value = currentSettings.totalMonths || 0;
+  settingsForm.totalPrograms.value = currentSettings.totalPrograms || 0;
+  settingsForm.introText.value = currentSettings.introText || "";
 
-      settingsForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        clearFieldErrors(settingsForm);
-        const committeeName = settingsForm.committeeName.value.trim();
-        const totalMonths = Number(settingsForm.totalMonths.value) || 0;
-        const totalPrograms = Number(settingsForm.totalPrograms.value) || 0;
-        let ok = true;
-        if (!validateRequired(settingsForm.committeeName, "কমিটির নাম লিখুন"))
-          ok = false;
-        if (!ok) return;
-        setPerfSettings({ committeeName, totalMonths, totalPrograms });
-        alert("পারফরম্যান্স সেটিংস সংরক্ষণ করা হয়েছে।");
-      });
-    }
+  settingsForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    clearFieldErrors(settingsForm);
+    const committeeName = settingsForm.committeeName.value.trim();
+    const totalMonths = Number(settingsForm.totalMonths.value) || 0;
+    const totalPrograms = Number(settingsForm.totalPrograms.value) || 0;
+    const introText = settingsForm.introText.value.trim();
 
+    let ok = true;
+    if (!validateRequired(settingsForm.committeeName, "কমিটির নাম লিখুন"))
+      ok = false;
+    if (!ok) return;
+
+    setPerfSettings({ committeeName, totalMonths, totalPrograms, introText });
+    alert("পারফরম্যান্স সেটিংস সংরক্ষণ করা হয়েছে।");
+  });
+}
     if (memberForm) {
       memberForm.addEventListener("submit", (e) => {
         e.preventDefault();
