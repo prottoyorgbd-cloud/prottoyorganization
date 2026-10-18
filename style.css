@@ -1106,7 +1106,7 @@ section { scroll-margin-top: 95px; }
   }
 }
 
-/* ==== Performance page : top stat boxes ==== */
+/* ==== Performance page : top stat boxes (colorful) ==== */
 .perf-stats {
   margin: 16px auto 0;
   max-width: 640px;
@@ -1116,25 +1116,40 @@ section { scroll-margin-top: 95px; }
 }
 
 .perf-stat-box {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 12px 18px;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
-  border-top: 3px solid #0f9d58; /* আপনার সবুজ টোন */
+  border-radius: 18px;
+  padding: 14px 20px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  text-align: center;
+  border: 1px solid rgba(15, 23, 42, 0.03);
+}
+
+/* ১ম কার্ড: সবুজ টোন */
+.perf-stat-box:nth-child(1) {
+  background: linear-gradient(135deg, #ecfdf3, #ffffff);
+  border-top: 3px solid #0f9d58;
+}
+
+/* ২য় কার্ড: হালকা কমলা টোন (বেশি উজ্জ্বল না) */
+.perf-stat-box:nth-child(2) {
+  background: linear-gradient(135deg, #fff7ed, #ffffff);
+  border-top: 3px solid #f97316;
 }
 
 .perf-stat-label {
-  font-size: 14px;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: #64748b;
 }
 
 .perf-stat-value {
-  font-size: 22px;
-  font-weight: 700;
-  color: #0f9d58;
+  margin-top: 4px;
+  font-size: 24px;
+  font-weight: 800;
+  color: #0f172a;
 }
 
-/* ==== Performance page : self result cards ==== */
+/* ==== Performance page : self result cards (colorful) ==== */
 .perf-result-grid {
   margin-top: 24px;
   display: grid;
@@ -1143,11 +1158,10 @@ section { scroll-margin-top: 95px; }
 }
 
 .perf-result-card {
-  background: #ffffff;
-  border-radius: 16px;
+  border-radius: 18px;
   padding: 16px 18px;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
-  border: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  border: 1px solid rgba(15, 23, 42, 0.04);
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -1156,15 +1170,30 @@ section { scroll-margin-top: 95px; }
   min-height: 95px;
 }
 
+/* Overall বক্স – সবুজ গ্রেডিয়েন্ট */
 .perf-result-main {
-  grid-column: 1 / -1; /* পুরো সারি জুড়ে বড় বক্স (Full Width) */
-  border-top: 3px solid #0f9d58;
+  grid-column: 1 / -1;
   min-height: 120px;
+  background: linear-gradient(135deg, #ecfdf3, #ffffff);
+  border: 1px solid #bbf7d0;
+  border-top: 4px solid #0f9d58;
+}
+
+/* নিচের ১ম ছোট বক্স: নীল টোন */
+.perf-result-card:nth-child(2) {
+  background: linear-gradient(135deg, #eff6ff, #ffffff);
+  border-color: #bfdbfe;
+}
+
+/* নিচের ২য় ছোট বক্স: কমলা টোন */
+.perf-result-card:nth-child(3) {
+  background: linear-gradient(135deg, #fff7ed, #ffffff);
+  border-color: #fed7aa;
 }
 
 .perf-result-label {
   font-size: 14px;
-  color: #64748b;
+  color: #475569;
   line-height: 1.4;
 }
 
@@ -1186,9 +1215,8 @@ section { scroll-margin-top: 95px; }
   .perf-result-grid {
     grid-template-columns: repeat(2, 1fr); /* দুই কলাম */
   }
-
   .perf-result-main {
-    grid-column: 1 / -1; /* Overall পুরো দুই কলাম জুড়ে থাকবে */
+    grid-column: 1 / -1; /* Overall পুরো দুই কলাম জুড়ে */
   }
 }
 
@@ -1196,7 +1224,6 @@ section { scroll-margin-top: 95px; }
   .perf-result-main .perf-result-value {
     font-size: 30px;
   }
-
   .perf-result-value {
     font-size: 24px;
   }
