@@ -742,7 +742,7 @@ function initPerformancePage() {
   const settings = getPerfSettings();
   const members = getPerfMembers();
 
-  // 🔹 নতুন যোগ: উপরের দুইটা বক্সে (মাস + প্রোগ্রাম) ভ্যালু বসানো
+  // 🔹 উপরের দুইটা স্ট্যাট বক্সে মান বসানো
   const monthsBox = $("#perfTotalMonthsBox");
   const programsBox = $("#perfTotalProgramsBox");
   if (monthsBox) monthsBox.textContent = settings.totalMonths || 0;
@@ -765,7 +765,7 @@ function initPerformancePage() {
       `এই কমিটির মোট ${settings.totalMonths} মাস এবং ${settings.totalPrograms}টি প্রোগ্রাম বিবেচনায় নিয়ে নিচের ঘরে নিজের তথ্য দিয়ে পারফরম্যান্স হিসাব করতে পারেন।`;
   }
 
-  // === নিজস্ব ক্যালকুলেটর ===
+  // === নিজস্ব ক্যালকুলেটর (ফি ৩০%, প্রোগ্রাম ৫০%, নতুন সদস্য ২০%) ===
   if (selfForm) {
     selfForm.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -797,15 +797,16 @@ function initPerformancePage() {
       const feePerf = Math.round(feeRatio * 100);
       const progPerf = Math.round(progRatio * 100);
 
-      // নতুন সদস্য অংশ: প্রতি সদস্যে ৪ পয়েন্ট, সর্বোচ্চ ২০
+      // নতুন সদস্য অংশ: প্রতি সদস্যে ৪ পয়েন্ট, সর্বোচ্চ ২০ (২০% ওজন)
       const addScore = Math.min(membersAdded * 4, 20); // ০–২০
 
-      // ওভারঅল = ফি (৫০) + প্রোগ্রাম (৩০) + নতুন সদস্য (২০)
-      const overall = Math.round(feeRatio * 50 + progRatio * 30 + addScore);
+      // ওভারঅল = ফি ৩০ + প্রোগ্রাম ৫০ + নতুন সদস্য ২০ = ১০০
+      const overall = Math.round(feeRatio * 30 + progRatio * 50 + addScore);
 
-      if (feeOut) feeOut.textContent = feePerf + "%";
-      if (progOut) progOut.textContent = progPerf + "%";
-      if (overallOut) overallOut.textContent = overall + "%";
+      // এখানে শুধু সংখ্যা বসাচ্ছি, % সাইন HTML এ আছে
+      if (feeOut) feeOut.textContent = feePerf;
+      if (progOut) progOut.textContent = progPerf;
+      if (overallOut) overallOut.textContent = overall;
       if (selfOutput) selfOutput.hidden = false;
     });
   }
@@ -834,16 +835,20 @@ function initPerformancePage() {
     const programs = Number(m.programs) || 0;
     const added = Number(m.membersAdded) || 0;
 
+    // ফি ৩০ পয়েন্ট, প্রোগ্রাম ৫০ পয়েন্ট
     const feeScore =
       settings.totalMonths > 0
-        ? Math.min((monthsPaid / settings.totalMonths) * 50, 50)
+        ? Math.min(monthsPaid / settings.totalMonths, 1) * 30
         : 0;
     const progScore =
       settings.totalPrograms > 0
-        ? Math.min((programs / settings.totalPrograms) * 30, 30)
+        ? Math.min(programs / settings.totalPrograms, 1) * 50
         : 0;
+
+    // নতুন সদস্য ২০ পয়েন্ট (সবার মধ্যে রিলেটিভ)
     const addScore = (added / maxAdded) * 20;
-    const total = Math.round(feeScore + progScore + addScore);
+
+    const total = Math.round(feeScore + progScore + addScore); // ০–১০০%
 
     const dueMonths = Math.max(settings.totalMonths - monthsPaid, 0);
 
@@ -867,14 +872,15 @@ function initPerformancePage() {
 
       const feeScore =
         settings.totalMonths > 0
-          ? Math.min((monthsPaid / settings.totalMonths) * 50, 50)
+          ? Math.min(monthsPaid / settings.totalMonths, 1) * 30
           : 0;
       const progScore =
         settings.totalPrograms > 0
-          ? Math.min((programs / settings.totalPrograms) * 30, 30)
+          ? Math.min(programs / settings.totalPrograms, 1) * 50
           : 0;
       const addScore = (added / maxAdded) * 20;
-      return sum + (feeScore + progScore + addScore);
+
+      return sum + (feeScore + progScore + addScore); // ০–১০০
     }, 0) / members.length;
 
   if (summaryEl) {
