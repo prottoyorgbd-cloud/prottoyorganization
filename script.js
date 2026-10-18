@@ -726,33 +726,135 @@
 
   /* ---------- Performance page (public) ---------- */
   function initPerformancePage() {
-    const tableBody = $("#perfTableBody");
-    const summaryEl = $("#perfSummary");
-    const settingsEl = $("#perfSettingsText");
-    if (!tableBody) return;
+  const tableBody = $("#perfTableBody");
+  const summaryEl = $("#perfSummary");
+  const settingsEl = $("#perfSettingsText");
+  const introEl = $("#perfIntroText");
+  const selfForm = $("#perfSelfForm");
+  const selfOutput = $("#perfSelfOutput");
+  const feeOut = $("#perfFeePercent");
+  const progOut = $("#perfProgPercent");
+  const overallOut = $("#perfOverallPercent");
 
-    const settings = getPerfSettings();
-    const members = getPerfMembers();
+  // যদি এই পেইজ না হয়, শুধু return
+  if (!tableBody && !selfForm) return;
 
-    settingsEl.textContent = `${settings.committeeName} — মোট ${settings.totalMonths} মাস, ${settings.totalPrograms}টি প্রোগ্রাম`;
+  const settings = getPerfSettings();
+  const members = getPerfMembers();
 
-    tableBody.innerHTML = "";
-    if (!members.length) {
-      tableBody.innerHTML = `
-        <tr><td colspan="6" style="text-align:center;color:#607267">
-          এখনো কোনো পারফরম্যান্স তথ্য যোগ করা হয়নি।
-        </td></tr>`;
-      summaryEl.textContent = "";
-      return;
+  // উপরের লেখা (এডমিন যেটা সেট করেছে, নাহলে ডিফল্ট)
+  if (settingsEl) {
+    if (settings.introText) {
+      settingsEl.textContent = settings.introText;
+    } else {
+      settingsEl.textContent =
+        `${settings.committeeName} — এ পর্যন্ত অতিবাহিত ${settings.totalMonths} মাস, মোট ${settings.totalPrograms}টি প্রোগ্রাম সম্পন্ন হয়েছে।`;
     }
+  }
 
-    // memberAdded ভিত্তিক স্কেল (২০%)
-    const maxAdded = Math.max(
-      ...members.map((m) => Number(m.membersAdded) || 0),
-      1
-    );
+  // ফর্মের ভিতরের ছোট নির্দেশনা (না থাকলে একই fallback)
+  if (introEl) {
+    introEl.textContent =
+      settings.introText ||
+      `এই কমিটির মোট ${settings.totalMonths} মাস এবং ${settings.totalPrograms}টি প্রোগ্রাম বিবেচনায় নিয়ে নিচের ঘরে নিজের তথ্য দিয়ে পারফরম্যান্স হিসাব করতে পারেন।`;
+  }
 
-    members.forEach((m) => {
+  // === নিজস্ব ক্যালকুলেটর ===
+  if (selfForm) {
+    selfForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      clearFieldErrors(selfForm);
+
+      const mField = selfForm.selfMonthsPaid;
+      const pField = selfForm.selfPrograms;
+      const aField = selfForm.selfMembersAdded;
+
+      let ok = true;
+      if (!validateRequired(mField, "কত মাস ফি দিয়েছেন লিখুন")) ok = false;
+      if (!validateRequired(pField, "কতটি প্রোগ্রামে উপস্থিত ছিলেন লিখুন")) ok = false;
+      if (!validateRequired(aField, "কতজন নতুন সদস্য যুক্ত করেছেন লিখুন")) ok = false;
+      if (!ok) return;
+
+      const monthsPaid = Math.max(0, Number(mField.value) || 0);
+      const programs = Math.max(0, Number(pField.value) || 0);
+      const membersAdded = Math.max(0, Number(aField.value) || 0);
+
+      const totalMonths = settings.totalMonths || 0;
+      const totalPrograms = settings.totalPrograms || 0;
+
+      const feeRatio =
+        totalMonths > 0 ? Math.min(monthsPaid / totalMonths, 1) : 0;
+      const progRatio =
+        totalPrograms > 0 ? Math.min(programs / totalPrograms, 1) : 0;
+
+      // সাব-স্কোর (০–১০০%)
+      const feePerf = Math.round(feeRatio * 100);
+      const progPerf = Math.round(progRatio * 100);
+
+      // নতুন সদস্য অংশ: প্রতি সদস্যে ৪ পয়েন্ট, সর্বোচ্চ ২০
+      const addScore = Math.min(membersAdded * 4, 20); // ০–২০
+
+      // ওভারঅল = ফি (৫০) + প্রোগ্রাম (৩০) + নতুন সদস্য (২০)
+      const overall = Math.round(feeRatio * 50 + progRatio * 30 + addScore);
+
+      if (feeOut) feeOut.textContent = feePerf + "%";
+      if (progOut) progOut.textContent = progPerf + "%";
+      if (overallOut) overallOut.textContent = overall + "%";
+      if (selfOutput) selfOutput.hidden = false;
+    });
+  }
+
+  // === অফিসিয়াল টেবিল (এডমিন ডাটা থেকে) ===
+  if (!tableBody) return;
+
+  tableBody.innerHTML = "";
+  if (!members.length) {
+    tableBody.innerHTML = `
+      <tr><td colspan="6" style="text-align:center;color:#607267">
+        এখনো কোনো পারফরম্যান্স তথ্য যোগ করা হয়নি।
+      </td></tr>`;
+    if (summaryEl) summaryEl.textContent = "";
+    return;
+  }
+
+  // সদস্যদের মধ্যে সর্বোচ্চ membersAdded বের করি (রিলেটিভ স্কোরের জন্য)
+  const maxAdded = Math.max(
+    ...members.map((m) => Number(m.membersAdded) || 0),
+    1
+  );
+
+  members.forEach((m) => {
+    const monthsPaid = Number(m.monthsPaid) || 0;
+    const programs = Number(m.programs) || 0;
+    const added = Number(m.membersAdded) || 0;
+
+    const feeScore =
+      settings.totalMonths > 0
+        ? Math.min((monthsPaid / settings.totalMonths) * 50, 50)
+        : 0;
+    const progScore =
+      settings.totalPrograms > 0
+        ? Math.min((programs / settings.totalPrograms) * 30, 30)
+        : 0;
+    const addScore = (added / maxAdded) * 20;
+    const total = Math.round(feeScore + progScore + addScore);
+
+    const dueMonths = Math.max(settings.totalMonths - monthsPaid, 0);
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${m.name}</td>
+      <td>${m.position || ""}</td>
+      <td>${total}%</td>
+      <td>${monthsPaid} / ${settings.totalMonths} (বকেয়া ${dueMonths} মাস)</td>
+      <td>${programs} / ${settings.totalPrograms}</td>
+      <td>${added}</td>
+    `;
+    tableBody.appendChild(tr);
+  });
+
+  const avg =
+    members.reduce((sum, m) => {
       const monthsPaid = Number(m.monthsPaid) || 0;
       const programs = Number(m.programs) || 0;
       const added = Number(m.membersAdded) || 0;
@@ -766,45 +868,15 @@
           ? Math.min((programs / settings.totalPrograms) * 30, 30)
           : 0;
       const addScore = (added / maxAdded) * 20;
-      const total = Math.round(feeScore + progScore + addScore);
+      return sum + (feeScore + progScore + addScore);
+    }, 0) / members.length;
 
-      const dueMonths = Math.max(settings.totalMonths - monthsPaid, 0);
-
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${m.name}</td>
-        <td>${m.position || ""}</td>
-        <td>${total}%</td>
-        <td>${monthsPaid} / ${settings.totalMonths} (বকেয়া ${dueMonths} মাস)</td>
-        <td>${programs} / ${settings.totalPrograms}</td>
-        <td>${added}</td>
-      `;
-      tableBody.appendChild(tr);
-    });
-
-    const avg =
-      members.reduce((sum, m) => {
-        const monthsPaid = Number(m.monthsPaid) || 0;
-        const programs = Number(m.programs) || 0;
-        const added = Number(m.membersAdded) || 0;
-
-        const feeScore =
-          settings.totalMonths > 0
-            ? Math.min((monthsPaid / settings.totalMonths) * 50, 50)
-            : 0;
-        const progScore =
-          settings.totalPrograms > 0
-            ? Math.min((programs / settings.totalPrograms) * 30, 30)
-            : 0;
-        const addScore = (added / maxAdded) * 20;
-        return sum + (feeScore + progScore + addScore);
-      }, 0) / members.length;
-
+  if (summaryEl) {
     summaryEl.textContent = `মোট ${
       members.length
-    } জনের গড় পারফরম্যান্স: ${Math.round(avg)}%`;
+    } জনের গড় ওভারঅল পারফরম্যান্স: ${Math.round(avg)}%`;
   }
-
+}
   /* ---------- Admin panel ---------- */
   function initAdminPage() {
     const loginSection = $("#adminLoginSection");
