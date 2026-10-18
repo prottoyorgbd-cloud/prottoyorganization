@@ -1085,6 +1085,19 @@ section { scroll-margin-top: 95px; }
 .admin-small-btn:hover {
   background: #c8f3d6;
 }
+/* ---------- নতুন: Line ad korchi ---------- */
+.perf-output {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: var(--green-light);
+  color: var(--green-dark);
+  font-size: .9rem;
+}
+.perf-output p {
+  margin: 3px 0;
+}
+/* ---------- নতুন: Line ad korchi ---------- */
 
 @media (max-width: 620px) {
   .admin-table th,
