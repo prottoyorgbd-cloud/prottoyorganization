@@ -1461,23 +1461,22 @@ if (settingsForm) {
     });
   }
 
-  /* ---------- Init on DOM ready ---------- */
-  document.addEventListener("DOMContentLoaded", () => {
-    seedInitialData();
-    initCurrentYear();
-    initMobileNav();
-    initBackToTop();
-    initQuickStats();
-    renderNotices();
-    initDonorListAndFilters();
-    initDonorForm();
-    initRequestForm();
-    initContactForm();
-    initAuthModal();
-    initCommitteePage();
-    initPerformancePage();
-    initAdminNoticeForm();
-    initAdminCommitteeForm();
-    initAdminPage();
-  });
-})();
+document.addEventListener("DOMContentLoaded", () => {
+  seedInitialData();
+  initCurrentYear();
+  initMobileNav();
+  initBackToTop();
+  initQuickStats();
+  renderNotices();
+  initDonorListAndFilters();
+  initDonorForm();
+  initRequestForm();
+  initContactForm();
+  initAuthModal();
+  initCommitteePage();
+  initPerformancePage();
+  initAdminNoticeForm();
+  initAdminCommitteeForm();
+  initAdminPage();
+  initHomeCommitteeSection(); // ← নতুন এই লাইন
+});
