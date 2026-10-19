@@ -19,8 +19,9 @@
     adminLoggedIn: "prottoy_admin_logged_in",
   };
 
-  const ADMIN_PHONE = "prottoyorg.bd@gmail.com";
-  const ADMIN_PASSWORD = "prottoy1234";
+  // আপডেটেড এডমিন লগইন তথ্য (মোবাইল + পাসওয়ার্ড)
+  const ADMIN_PHONE = "01700000000";
+  const ADMIN_PASSWORD = "prottoy2020";
 
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
@@ -67,32 +68,32 @@
     });
   };
 
-  // Google Drive শেয়ার লিংক -> ডাইরেক্ট ইমেজ লিংক
-function normalizePhotoUrl(raw) {
-  if (!raw) return "";
-  raw = raw.trim();
+  // Google Drive শেয়ার লিংক -> ডাইরেক্ট ইমেজ (thumbnail) লিংক
+  function normalizePhotoUrl(raw) {
+    if (!raw) return "";
+    raw = raw.trim();
 
-  // যদি আগেই সরাসরি ইমেজ লিংক বা data URL হয়, 그대로 রাখি
-  if (
-    /^data:image\//.test(raw) ||
-    /\.(jpe?g|png|gif|webp|avif)(\?.*)?$/i.test(raw)
-  ) {
+    // যদি আগেই সরাসরি ইমেজ লিংক বা data URL হয়, 그대로 রাখি
+    if (
+      /^data:image\//.test(raw) ||
+      /\.(jpe?g|png|gif|webp|avif)(\?.*)?$/i.test(raw)
+    ) {
+      return raw;
+    }
+
+    // Google Drive: বিভিন্ন ধরনের লিংক থেকে FILE_ID বের করা
+    const driveMatch =
+      raw.match(/\/d\/([a-zA-Z0-9_-]+)/) || // .../file/d/FILE_ID/view
+      raw.match(/[?&]id=([a-zA-Z0-9_-]+)/); // ...open?id=FILE_ID বা download?id=FILE_ID
+
+    if (driveMatch) {
+      const fileId = driveMatch[1];
+      // থাম্বনেইল এন্ডপয়েন্ট ব্যবহার, যেটা সবসময় সরাসরি ইমেজ দেয়
+      return `https://drive.google.com/thumbnail?id=${fileId}&sz=w300-h300`;
+    }
+
     return raw;
   }
-
-  // Google Drive: বিভিন্ন ধরনের লিংক থেকে FILE_ID বের করা
-  const driveMatch =
-    raw.match(/\/d\/([a-zA-Z0-9_-]+)/) ||      // .../file/d/FILE_ID/view
-    raw.match(/[?&]id=([a-zA-Z0-9_-]+)/);      // ...open?id=FILE_ID বা download?id=FILE_ID
-
-  if (driveMatch) {
-    const fileId = driveMatch[1];
-    // থাম্বনেইল এন্ডপয়েন্ট ব্যবহার, যেটা সবসময় সরাসরি ইমেজ দেয়
-    return `https://drive.google.com/thumbnail?id=${fileId}&sz=w300-h300`;
-  }
-
-  return raw;
-}
 
   /* ---------- Seed default data (once) ---------- */
   const DEFAULT_NOTICES = [
@@ -136,20 +137,93 @@ function normalizePhotoUrl(raw) {
     },
   ];
 
+  // অফিসিয়াল কমিটি (Drive লিংক সহ)
+  const DEFAULT_COMMITTEE = [
+    // পরিচালকগণ
+    {
+      id: "c1",
+      name: "শাহজাহান আজাদ",
+      position: "পরিচালক",
+      photoUrl:
+        "https://drive.google.com/file/d/1zsdholdoTjjA-sZJyIdid13oG3ECdUBR/view?usp=drive_link",
+      since: "",
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: "c2",
+      name: "জোবাইদ রাফি",
+      position: "পরিচালক",
+      photoUrl:
+        "https://drive.google.com/file/d/1Jkr6iKnBFmvN9Ht3RtpeTVlbG0Ug-cUX/view?usp=drive_link",
+      since: "",
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: "c3",
+      name: "নাসির উদ্দীন",
+      position: "পরিচালক",
+      photoUrl:
+        "https://drive.google.com/file/d/1VGAl9DzTqfuRnOPJCH7_g5di-SXdLBcN/view?usp=drive_link",
+      since: "",
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: "c4",
+      name: "ইসমাঈল হোসেন সাগর",
+      position: "পরিচালক",
+      photoUrl:
+        "https://drive.google.com/file/d/1uBKxrY65BpybjZZOqV74PD6c7_cxPbaT/view?usp=drive_link",
+      since: "",
+      createdAt: new Date().toISOString(),
+    },
+
+    // সহ-পরিচালকগণ
+    {
+      id: "c5",
+      name: "আলমগীর হোসেন",
+      position: "সহ-পরিচালক",
+      photoUrl:
+        "https://drive.google.com/file/d/177yKCOEBH3HDM3fSGOgHuEx1I5-WwLGm/view?usp=drive_link",
+      since: "",
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: "c6",
+      name: "মাসুদ হক",
+      position: "সহ-পরিচালক",
+      photoUrl:
+        "https://drive.google.com/file/d/1vJ8VnuP12ktckHv4ytE0IDoShQF30g-Z/view?usp=drive_link",
+      since: "",
+      createdAt: new Date().toISOString(),
+    },
+  ];
+
   function seedInitialData() {
-    if (localStorage.getItem(LS_KEYS.seeded)) return;
-    saveArray(LS_KEYS.notices, DEFAULT_NOTICES);
-    saveArray(LS_KEYS.donors, DEFAULT_DONORS);
-    saveArray(LS_KEYS.requests, []);
-    saveArray(LS_KEYS.committeeMembers, []);
-    saveObject(LS_KEYS.perfSettings, {
-      committeeName: "চলমান কমিটি",
-      totalMonths: 12,
-      totalPrograms: 6,
-      introText: "",
-    });
-    saveArray(LS_KEYS.perfMembers, []);
-    localStorage.setItem(LS_KEYS.seeded, "1");
+    // আগের লজিক: প্রথমবার সাইট ওপেন হলে কিছু ডেমো ডেটা সিড করা
+    if (!localStorage.getItem(LS_KEYS.seeded)) {
+      saveArray(LS_KEYS.notices, DEFAULT_NOTICES);
+      saveArray(LS_KEYS.donors, DEFAULT_DONORS);
+      saveArray(LS_KEYS.requests, []);
+
+      /* আগের কোড (কমিটি একদম ফাঁকা রাখা হতো) – future এ দরকার হলে এখান থেকে নিতে পারবে
+      saveArray(LS_KEYS.committeeMembers, []);
+      */
+
+      saveObject(LS_KEYS.perfSettings, {
+        committeeName: "চলমান কমিটি",
+        totalMonths: 12,
+        totalPrograms: 6,
+        introText: "",
+      });
+      saveArray(LS_KEYS.perfMembers, []);
+      localStorage.setItem(LS_KEYS.seeded, "1");
+    }
+
+    // নতুন: যদি এখনো কোনো কমিটি সেভ না থাকে, অফিসিয়াল কমিটি সিড করি
+    const existingCommittee = loadArray(LS_KEYS.committeeMembers);
+    if (!existingCommittee || existingCommittee.length === 0) {
+      saveArray(LS_KEYS.committeeMembers, DEFAULT_COMMITTEE);
+    }
   }
 
   /* ---------- Data accessors ---------- */
@@ -163,7 +237,8 @@ function normalizePhotoUrl(raw) {
   const setRequests = (data) => saveArray(LS_KEYS.requests, data);
 
   const getCommitteeMembers = () => loadArray(LS_KEYS.committeeMembers);
-  const setCommitteeMembers = (data) => saveArray(LS_KEYS.committeeMembers, data);
+  const setCommitteeMembers = (data) =>
+    saveArray(LS_KEYS.committeeMembers, data);
 
   const getPerfSettings = () =>
     loadObject(LS_KEYS.perfSettings) || {
@@ -228,11 +303,13 @@ function normalizePhotoUrl(raw) {
     const grid = $("#noticeGrid");
     if (!grid) return;
     const notices = getNotices().sort(
-      (a, b) => new Date(b.date || b.createdAt) - new Date(a.date || a.createdAt)
+      (a, b) =>
+        new Date(b.date || b.createdAt) - new Date(a.date || a.createdAt)
     );
     grid.innerHTML = "";
     if (!notices.length) {
-      grid.innerHTML = '<p style="color:#607267">এ মুহূর্তে কোনো নোটিশ নেই।</p>';
+      grid.innerHTML =
+        '<p style="color:#607267">এ মুহূর্তে কোনো নোটিশ নেই।</p>';
       return;
     }
     for (const n of notices) {
@@ -263,10 +340,19 @@ function normalizePhotoUrl(raw) {
     const resultCountEl = $("#resultCount");
     const activeFilterTextEl = $("#activeFilterText");
     const emptyState = $("#emptyState");
-    if (!searchInput || !bloodFilter || !districtFilter || !upazilaFilter || !availableOnly) return;
+    if (
+      !searchInput ||
+      !bloodFilter ||
+      !districtFilter ||
+      !upazilaFilter ||
+      !availableOnly
+    )
+      return;
 
     let donorsAll = getDonors().filter((d) => d.confirmed);
-    const districts = [...new Set(donorsAll.map((d) => d.district).filter(Boolean))];
+    const districts = [
+      ...new Set(donorsAll.map((d) => d.district).filter(Boolean)),
+    ];
     districtFilter.innerHTML =
       '<option value="">সব জেলা</option>' +
       districts.map((d) => `<option>${d}</option>`).join("");
@@ -274,7 +360,9 @@ function normalizePhotoUrl(raw) {
     function updateUpazilaOptions() {
       const d = districtFilter.value.trim();
       const list = donorsAll.filter((x) => !d || x.district === d);
-      const upazilas = [...new Set(list.map((x) => x.upazila).filter(Boolean))];
+      const upazilas = [
+        ...new Set(list.map((x) => x.upazila).filter(Boolean)),
+      ];
       upazilaFilter.innerHTML =
         '<option value="">সব উপজেলা</option>' +
         upazilas.map((u) => `<option>${u}</option>`).join("");
@@ -290,7 +378,15 @@ function normalizePhotoUrl(raw) {
       let list = donorsAll.slice();
       if (q) {
         list = list.filter((d) => {
-          const hay = ((d.name || "") + " " + (d.area || "") + " " + (d.district || "") + " " + (d.upazila || "")).toLowerCase();
+          const hay = (
+            (d.name || "") +
+            " " +
+            (d.area || "") +
+            " " +
+            (d.district || "") +
+            " " +
+            (d.upazila || "")
+          ).toLowerCase();
           return hay.includes(q);
         });
       }
@@ -302,29 +398,47 @@ function normalizePhotoUrl(raw) {
       if (!list.length) {
         if (emptyState) emptyState.hidden = false;
         if (resultCountEl) resultCountEl.textContent = "০";
-        if (activeFilterTextEl) activeFilterTextEl.textContent = "নির্বাচিত শর্তে কোনো রক্তদাতা পাওয়া যায়নি";
+        if (activeFilterTextEl)
+          activeFilterTextEl.textContent =
+            "নির্বাচিত শর্তে কোনো রক্তদাতা পাওয়া যায়নি";
         return;
       }
       if (emptyState) emptyState.hidden = true;
       list.forEach((d) => {
         const card = document.createElement("article");
         card.className = "donor-card";
-        const statusClass = d.available === false ? "unavailable" : "available";
-        const statusText = d.available === false ? "অপাতত রক্তদানে অনুপলব্ধ" : "এখন রক্তদানে প্রস্তুত";
+        const statusClass =
+          d.available === false ? "unavailable" : "available";
+        const statusText =
+          d.available === false
+            ? "অপাতত রক্তদানে অনুপলব্ধ"
+            : "এখন রক্তদানে প্রস্তুত";
         card.innerHTML = `
           <div class="donor-head">
             <div>
               <h3>${d.name}</h3>
-              <p class="donor-location">${[d.area, d.upazila, d.district].filter(Boolean).join(", ")}</p>
+              <p class="donor-location">${[
+                d.area,
+                d.upazila,
+                d.district,
+              ]
+                .filter(Boolean)
+                .join(", ")}</p>
               <span class="status ${statusClass}">${statusText}</span>
             </div>
             <div class="blood-badge">${d.bloodGroup}</div>
           </div>
           <div class="donor-info">
-            <div><span>মোবাইল</span><strong>${d.phone || "প্রদত্ত নয়"}</strong></div>
-            <div><span>শেষ রক্তদান</span><strong>${d.lastDonation ? formatDate(d.lastDonation) : "অজানা"}</strong></div>
+            <div><span>মোবাইল</span><strong>${
+              d.phone || "প্রদত্ত নয়"
+            }</strong></div>
+            <div><span>শেষ রক্তদান</span><strong>${
+              d.lastDonation ? formatDate(d.lastDonation) : "অজানা"
+            }</strong></div>
           </div>
-          <a class="phone-link ${d.phone ? "" : "disabled"}" href="${d.phone ? "tel:" + d.phone : "#"}">
+          <a class="phone-link ${
+            d.phone ? "" : "disabled"
+          }" href="${d.phone ? "tel:" + d.phone : "#"}">
             ${d.phone ? "কল করুন" : "ফোন নম্বর পাওয়া যায়নি"}
           </a>
         `;
@@ -340,18 +454,27 @@ function normalizePhotoUrl(raw) {
         if (dist) desc.push(`জেলা: ${dist}`);
         if (upa) desc.push(`উপজেলা: ${upa}`);
         if (onlyAvail) desc.push("শুধু প্রস্তুত দাতা");
-        activeFilterTextEl.textContent = desc.length ? desc.join(" • ") : "সকল রক্তদাতা";
+        activeFilterTextEl.textContent = desc.length
+          ? desc.join(" • ")
+          : "সকল রক্তদাতা";
       }
     }
     searchInput.addEventListener("input", applyFilters);
     bloodFilter.addEventListener("change", applyFilters);
-    districtFilter.addEventListener("change", () => { updateUpazilaOptions(); applyFilters(); });
+    districtFilter.addEventListener("change", () => {
+      updateUpazilaOptions();
+      applyFilters();
+    });
     upazilaFilter.addEventListener("change", applyFilters);
     availableOnly.addEventListener("change", applyFilters);
     if (resetBtn) {
       resetBtn.addEventListener("click", () => {
-        searchInput.value = ""; bloodFilter.value = ""; districtFilter.value = "";
-        updateUpazilaOptions(); upazilaFilter.value = ""; availableOnly.checked = false;
+        searchInput.value = "";
+        bloodFilter.value = "";
+        districtFilter.value = "";
+        updateUpazilaOptions();
+        upazilaFilter.value = "";
+        availableOnly.checked = false;
         applyFilters();
       });
     }
@@ -365,7 +488,10 @@ function normalizePhotoUrl(raw) {
     const errorEl = wrapper.querySelector(".field-error");
     if (!field.value || !field.value.toString().trim()) {
       wrapper.classList.add("has-error");
-      if (errorEl) { errorEl.hidden = false; errorEl.textContent = message; }
+      if (errorEl) {
+        errorEl.hidden = false;
+        errorEl.textContent = message;
+      }
       return false;
     }
     wrapper.classList.remove("has-error");
@@ -399,7 +525,8 @@ function normalizePhotoUrl(raw) {
       const consent = form.consent.checked;
       let ok = true;
       if (!validateRequired(form.name, "নাম লিখুন")) ok = false;
-      if (!validateRequired(form.bloodGroup, "রক্তের গ্রুপ নির্বাচন করুন")) ok = false;
+      if (!validateRequired(form.bloodGroup, "রক্তের গ্রুপ নির্বাচন করুন"))
+        ok = false;
       if (!validateRequired(form.phone, "মোবাইল নম্বর লিখুন")) ok = false;
       if (!validateRequired(form.district, "জেলা লিখুন")) ok = false;
       if (!validateRequired(form.upazila, "উপজেলা লিখুন")) ok = false;
@@ -408,7 +535,10 @@ function normalizePhotoUrl(raw) {
         const wrapper = form.consent.closest(".field");
         const err = wrapper ? wrapper.querySelector(".field-error") : null;
         if (wrapper) wrapper.classList.add("has-error");
-        if (err) { err.hidden = false; err.textContent = "তালিকায় তথ্য প্রকাশের সম্মতি দিন।"; }
+        if (err) {
+          err.hidden = false;
+          err.textContent = "তালিকায় তথ্য প্রকাশের সম্মতি দিন।";
+        }
         ok = false;
       }
       const phoneRe = /^01[0-9]{9}$/;
@@ -416,17 +546,34 @@ function normalizePhotoUrl(raw) {
         const wrapper = form.phone.closest(".field");
         const err = wrapper ? wrapper.querySelector(".field-error") : null;
         if (wrapper) wrapper.classList.add("has-error");
-        if (err) { err.hidden = false; err.textContent = "সঠিক বাংলাদেশি মোবাইল নম্বর লিখুন (১১ ডিজিট)।"; }
+        if (err) {
+          err.hidden = false;
+          err.textContent =
+            "সঠিক বাংলাদেশি মোবাইল নম্বর লিখুন (১১ ডিজিট)।";
+        }
         ok = false;
       }
       if (!ok) return;
       const donors = getDonors();
-      donors.push({ id: uid(), name, bloodGroup, phone, district, upazila, area, lastDonation, available: true, confirmed: false, createdAt: new Date().toISOString() });
+      donors.push({
+        id: uid(),
+        name,
+        bloodGroup,
+        phone,
+        district,
+        upazila,
+        area,
+        lastDonation,
+        available: true,
+        confirmed: false,
+        createdAt: new Date().toISOString(),
+      });
       setDonors(donors);
       form.reset();
       if (msg) {
         msg.hidden = false;
-        msg.textContent = "ধন্যবাদ! আপনার তথ্য সংরক্ষণ করা হয়েছে। এডমিন রিভিউর পর তালিকায় যুক্ত হবে।";
+        msg.textContent =
+          "ধন্যবাদ! আপনার তথ্য সংরক্ষণ করা হয়েছে। এডমিন রিভিউর পর তালিকায় যুক্ত হবে।";
         setTimeout(() => (msg.hidden = true), 8000);
       }
     });
@@ -448,27 +595,45 @@ function normalizePhotoUrl(raw) {
       const details = form.details.value.trim();
       let ok = true;
       if (!validateRequired(form.patientName, "রোগীর নাম লিখুন")) ok = false;
-      if (!validateRequired(form.bloodGroup, "রক্তের গ্রুপ নির্বাচন করুন")) ok = false;
+      if (!validateRequired(form.bloodGroup, "রক্তের গ্রুপ নির্বাচন করুন"))
+        ok = false;
       if (!validateRequired(form.bags, "ব্যাগ সংখ্যাটি লিখুন")) ok = false;
       if (!validateRequired(form.neededDate, "তারিখ নির্বাচন করুন")) ok = false;
-      if (!validateRequired(form.hospital, "হাসপাতাল / স্থান লিখুন")) ok = false;
+      if (!validateRequired(form.hospital, "হাসপাতাল / স্থান লিখুন"))
+        ok = false;
       if (!validateRequired(form.phone, "যোগাযোগ নম্বর লিখুন")) ok = false;
       const phoneRe = /^01[0-9]{9}$/;
       if (phone && !phoneRe.test(phone)) {
         const wrapper = form.phone.closest(".field");
         const err = wrapper ? wrapper.querySelector(".field-error") : null;
         if (wrapper) wrapper.classList.add("has-error");
-        if (err) { err.hidden = false; err.textContent = "সঠিক বাংলাদেশি মোবাইল নম্বর লিখুন (১১ ডিজিট)।"; }
+        if (err) {
+          err.hidden = false;
+          err.textContent =
+            "সঠিক বাংলাদেশি মোবাইল নম্বর লিখুন (১১ ডিজিট)।";
+        }
         ok = false;
       }
       if (!ok) return;
       const requests = getRequests();
-      requests.push({ id: uid(), patientName, bloodGroup, bags: Number(bags) || 1, neededDate, hospital, phone, details, status: "pending", createdAt: new Date().toISOString() });
+      requests.push({
+        id: uid(),
+        patientName,
+        bloodGroup,
+        bags: Number(bags) || 1,
+        neededDate,
+        hospital,
+        phone,
+        details,
+        status: "pending",
+        createdAt: new Date().toISOString(),
+      });
       setRequests(requests);
       form.reset();
       if (msg) {
         msg.hidden = false;
-        msg.textContent = "আবেদন গ্রহণ করা হয়েছে। আমাদের স্বেচ্ছাসেবকরা দ্রুত সম্ভব যোগাযোগের চেষ্টা করবেন।";
+        msg.textContent =
+          "আবেদন গ্রহণ করা হয়েছে। আমাদের স্বেচ্ছাসেবকরা দ্রুত সম্ভব যোগাযোগের চেষ্টা করবেন।";
         setTimeout(() => (msg.hidden = true), 8000);
       }
     });
@@ -489,7 +654,8 @@ function normalizePhotoUrl(raw) {
       form.reset();
       if (msg) {
         msg.hidden = false;
-        msg.textContent = "ধন্যবাদ! আপনার বার্তা সফলভাবে গ্রহণ করা হয়েছে। শীঘ্রই উত্তর দেওয়ার চেষ্টা করা হবে।";
+        msg.textContent =
+          "ধন্যবাদ! আপনার বার্তা সফলভাবে গ্রহণ করা হয়েছে। শীঘ্রই উত্তর দেওয়ার চেষ্টা করা হবে।";
         setTimeout(() => (msg.hidden = true), 8000);
       }
     });
@@ -505,21 +671,44 @@ function normalizePhotoUrl(raw) {
     const registerForm = $("#registerForm");
     const loginMsg = $("#loginMsg");
     const registerMsg = $("#registerMsg");
-    if (!modal || !loginBtn || !closeBtn || !tabLogin || !tabRegister || !loginForm || !registerForm) return;
-    function openModal() { modal.hidden = false; document.body.classList.add("modal-open"); }
-    function closeModal() { modal.hidden = true; document.body.classList.remove("modal-open"); }
+    if (
+      !modal ||
+      !loginBtn ||
+      !closeBtn ||
+      !tabLogin ||
+      !tabRegister ||
+      !loginForm ||
+      !registerForm
+    )
+      return;
+    function openModal() {
+      modal.hidden = false;
+      document.body.classList.add("modal-open");
+    }
+    function closeModal() {
+      modal.hidden = true;
+      document.body.classList.remove("modal-open");
+    }
     loginBtn.addEventListener("click", openModal);
     closeBtn.addEventListener("click", closeModal);
-    modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeModal();
+    });
     function activateTab(which) {
       if (which === "login") {
-        tabLogin.classList.add("active"); tabLogin.setAttribute("aria-selected", "true");
-        tabRegister.classList.remove("active"); tabRegister.setAttribute("aria-selected", "false");
-        loginForm.hidden = false; registerForm.hidden = true;
+        tabLogin.classList.add("active");
+        tabLogin.setAttribute("aria-selected", "true");
+        tabRegister.classList.remove("active");
+        tabRegister.setAttribute("aria-selected", "false");
+        loginForm.hidden = false;
+        registerForm.hidden = true;
       } else {
-        tabRegister.classList.add("active"); tabRegister.setAttribute("aria-selected", "true");
-        tabLogin.classList.remove("active"); tabLogin.setAttribute("aria-selected", "false");
-        loginForm.hidden = true; registerForm.hidden = false;
+        tabRegister.classList.add("active");
+        tabRegister.setAttribute("aria-selected", "true");
+        tabLogin.classList.remove("active");
+        tabLogin.setAttribute("aria-selected", "false");
+        loginForm.hidden = true;
+        registerForm.hidden = false;
       }
     }
     tabLogin.addEventListener("click", () => activateTab("login"));
@@ -531,17 +720,27 @@ function normalizePhotoUrl(raw) {
       const pass = loginForm.password.value;
       let ok = true;
       if (!validateRequired(loginForm.phone, "মোবাইল নম্বর লিখুন")) ok = false;
-      if (!validateRequired(loginForm.password, "পাসওয়ার্ড লিখুন")) ok = false;
+      if (!validateRequired(loginForm.password, "পাসওয়ার্ড লিখুন"))
+        ok = false;
       if (!ok) return;
       if (phone === ADMIN_PHONE && pass === ADMIN_PASSWORD) {
         localStorage.setItem(LS_KEYS.adminLoggedIn, "1");
-        if (loginMsg) { loginMsg.hidden = false; loginMsg.textContent = "সফলভাবে লগইন হয়েছে, আপনাকে এডমিন প্যানেলে পাঠানো হচ্ছে..."; }
-        setTimeout(() => { window.location.href = "admin.html"; }, 800);
+        if (loginMsg) {
+          loginMsg.hidden = false;
+          loginMsg.textContent =
+            "সফলভাবে লগইন হয়েছে, আপনাকে এডমিন প্যানেলে পাঠানো হচ্ছে...";
+        }
+        setTimeout(() => {
+          window.location.href = "admin.html";
+        }, 800);
       } else {
         const wrapper = loginForm.password.closest(".field");
         const err = wrapper ? wrapper.querySelector(".field-error") : null;
         if (wrapper) wrapper.classList.add("has-error");
-        if (err) { err.hidden = false; err.textContent = "মোবাইল নম্বর বা পাসওয়ার্ড সঠিক নয়।"; }
+        if (err) {
+          err.hidden = false;
+          err.textContent = "মোবাইল নম্বর বা পাসওয়ার্ড সঠিক নয়।";
+        }
       }
     });
     registerForm.addEventListener("submit", (e) => {
@@ -549,7 +748,8 @@ function normalizePhotoUrl(raw) {
       clearFieldErrors(registerForm);
       if (registerMsg) {
         registerMsg.hidden = false;
-        registerMsg.textContent = "এই ডেমো ভার্সনে অনলাইন নিবন্ধন সিস্টেম চালু নেই। সদস্য হতে চাইলে নির্ধারিত ফর্ম ও এডমিনের মাধ্যমে যোগাযোগ করুন।";
+        registerMsg.textContent =
+          "এই ডেমো ভার্সনে অনলাইন নিবন্ধন সিস্টেম চালু নেই। সদস্য হতে চাইলে নির্ধারিত ফর্ম ও এডমিনের মাধ্যমে যোগাযোগ করুন।";
         setTimeout(() => (registerMsg.hidden = true), 8000);
       }
     });
@@ -561,22 +761,38 @@ function normalizePhotoUrl(raw) {
     if (!grid) return;
     const members = getCommitteeMembers();
     if (!members.length) {
-      grid.innerHTML = '<p style="color:#607267">এখনও কোনো কমিটির সদস্য যুক্ত করা হয়নি।</p>';
+      grid.innerHTML =
+        '<p style="color:#607267">এখনও কোনো কমিটির সদস্য যুক্ত করা হয়নি।</p>';
       return;
     }
     grid.innerHTML = "";
     members.forEach((m) => {
       const card = document.createElement("article");
       card.className = "committee-card";
-      const initials = (m.name || "").split(" ").map((p) => p[0]).join("").slice(0, 2).toUpperCase();
+      const initials = (m.name || "")
+        .split(" ")
+        .map((p) => p[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase();
       const photoUrl = normalizePhotoUrl(m.photoUrl || "");
       card.innerHTML = `
         <div class="committee-avatar">
-          ${photoUrl ? `<img src="${photoUrl}" alt="${m.name}" loading="lazy">` : `<span>${initials}</span>`}
+          ${
+            photoUrl
+              ? `<img src="${photoUrl}" alt="${m.name}" loading="lazy">`
+              : `<span>${initials}</span>`
+          }
         </div>
         <h3>${m.name}</h3>
         <p class="committee-position">${m.position || ""}</p>
-        ${m.since ? `<p class="committee-since">দায়িত্ব: ${formatDate(m.since)} থেকে</p>` : ""}
+        ${
+          m.since
+            ? `<p class="committee-since">দায়িত্ব: ${formatDate(
+                m.since
+              )} থেকে</p>`
+            : ""
+        }
       `;
       grid.appendChild(card);
     });
@@ -613,7 +829,13 @@ function normalizePhotoUrl(raw) {
         <div class="committee-home-photo">${photoInner}</div>
         <div class="committee-home-name">${name}</div>
         <div class="committee-home-position">${pos}</div>
-        ${since ? `<div class="committee-home-since">দায়িত্ব: ${formatDate(since)} থেকে</div>` : ""}
+        ${
+          since
+            ? `<div class="committee-home-since">দায়িত্ব: ${formatDate(
+                since
+              )} থেকে</div>`
+            : ""
+        }
       `;
       listEl.appendChild(card);
     });
@@ -639,10 +861,13 @@ function normalizePhotoUrl(raw) {
     if (programsBox) programsBox.textContent = settings.totalPrograms || 0;
     if (settingsEl) {
       if (settings.introText) settingsEl.textContent = settings.introText;
-      else settingsEl.textContent = `${settings.committeeName} — এ পর্যন্ত অতিবাহিত ${settings.totalMonths} মাস, মোট ${settings.totalPrograms}টি প্রোগ্রাম সম্পন্ন হয়েছে।`;
+      else
+        settingsEl.textContent = `${settings.committeeName} — এ পর্যন্ত অতিবাহিত ${settings.totalMonths} মাস, মোট ${settings.totalPrograms}টি প্রোগ্রাম সম্পন্ন হয়েছে।`;
     }
     if (introEl) {
-      introEl.textContent = settings.introText || `এই কমিটির মোট ${settings.totalMonths} মাস এবং ${settings.totalPrograms}টি প্রোগ্রাম বিবেচনায় নিয়ে নিচের ঘরে নিজের তথ্য দিয়ে পারফরম্যান্স হিসাব করতে পারেন।`;
+      introEl.textContent =
+        settings.introText ||
+        `এই কমিটির মোট ${settings.totalMonths} মাস এবং ${settings.totalPrograms}টি প্রোগ্রাম বিবেচনায় নিয়ে নিচের ঘরে নিজের তথ্য দিয়ে পারফরম্যান্স হিসাব করতে পারেন।`;
     }
     if (selfForm) {
       selfForm.addEventListener("submit", (e) => {
@@ -653,16 +878,25 @@ function normalizePhotoUrl(raw) {
         const aField = selfForm.selfMembersAdded;
         let ok = true;
         if (!validateRequired(mField, "কত মাস ফি দিয়েছেন লিখুন")) ok = false;
-        if (!validateRequired(pField, "কতটি প্রোগ্রামে উপস্থিত ছিলেন লিখুন")) ok = false;
-        if (!validateRequired(aField, "কতজন নতুন সদস্য যুক্ত করেছেন লিখুন")) ok = false;
+        if (!validateRequired(pField, "কতটি প্রোগ্রামে উপস্থিত ছিলেন লিখুন"))
+          ok = false;
+        if (
+          !validateRequired(
+            aField,
+            "কতজন নতুন সদস্য যুক্ত করেছেন লিখুন"
+          )
+        )
+          ok = false;
         if (!ok) return;
         const monthsPaid = Math.max(0, Number(mField.value) || 0);
         const programs = Math.max(0, Number(pField.value) || 0);
         const membersAdded = Math.max(0, Number(aField.value) || 0);
         const totalMonths = settings.totalMonths || 0;
         const totalPrograms = settings.totalPrograms || 0;
-        const feeRatio = totalMonths > 0 ? Math.min(monthsPaid / totalMonths, 1) : 0;
-        const progRatio = totalPrograms > 0 ? Math.min(programs / totalPrograms, 1) : 0;
+        const feeRatio =
+          totalMonths > 0 ? Math.min(monthsPaid / totalMonths, 1) : 0;
+        const progRatio =
+          totalPrograms > 0 ? Math.min(programs / totalPrograms, 1) : 0;
         const feePerf = Math.round(feeRatio * 100);
         const progPerf = Math.round(progRatio * 100);
         const addScore = Math.min(membersAdded * 4, 20);
@@ -680,30 +914,55 @@ function normalizePhotoUrl(raw) {
       if (summaryEl) summaryEl.textContent = "";
       return;
     }
-    const maxAdded = Math.max(...members.map((m) => Number(m.membersAdded) || 0), 1);
+    const maxAdded = Math.max(
+      ...members.map((m) => Number(m.membersAdded) || 0),
+      1
+    );
     members.forEach((m) => {
       const monthsPaid = Number(m.monthsPaid) || 0;
       const programs = Number(m.programs) || 0;
       const added = Number(m.membersAdded) || 0;
-      const feeScore = settings.totalMonths > 0 ? Math.min(monthsPaid / settings.totalMonths, 1) * 30 : 0;
-      const progScore = settings.totalPrograms > 0 ? Math.min(programs / settings.totalPrograms, 1) * 50 : 0;
+      const feeScore =
+        settings.totalMonths > 0
+          ? Math.min(monthsPaid / settings.totalMonths, 1) * 30
+          : 0;
+      const progScore =
+        settings.totalPrograms > 0
+          ? Math.min(programs / settings.totalPrograms, 1) * 50
+          : 0;
       const addScore = (added / maxAdded) * 20;
       const total = Math.round(feeScore + progScore + addScore);
       const dueMonths = Math.max(settings.totalMonths - monthsPaid, 0);
       const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${m.name}</td><td>${m.position || ""}</td><td>${total}%</td><td>${monthsPaid} / ${settings.totalMonths} (বকেয়া ${dueMonths} মাস)</td><td>${programs} / ${settings.totalPrograms}</td><td>${added}</td>`;
+      tr.innerHTML = `<td>${m.name}</td><td>${
+        m.position || ""
+      }</td><td>${total}%</td><td>${monthsPaid} / ${
+        settings.totalMonths
+      } (বকেয়া ${dueMonths} মাস)</td><td>${programs} / ${
+        settings.totalPrograms
+      }</td><td>${added}</td>`;
       tableBody.appendChild(tr);
     });
-    const avg = members.reduce((sum, m) => {
-      const monthsPaid = Number(m.monthsPaid) || 0;
-      const programs = Number(m.programs) || 0;
-      const added = Number(m.membersAdded) || 0;
-      const feeScore = settings.totalMonths > 0 ? Math.min(monthsPaid / settings.totalMonths, 1) * 30 : 0;
-      const progScore = settings.totalPrograms > 0 ? Math.min(programs / settings.totalPrograms, 1) * 50 : 0;
-      const addScore = (added / maxAdded) * 20;
-      return sum + (feeScore + progScore + addScore);
-    }, 0) / members.length;
-    if (summaryEl) summaryEl.textContent = `মোট ${members.length} জনের গড় ওভারঅল পারফরম্যান্স: ${Math.round(avg)}%`;
+    const avg =
+      members.reduce((sum, m) => {
+        const monthsPaid = Number(m.monthsPaid) || 0;
+        const programs = Number(m.programs) || 0;
+        const added = Number(m.membersAdded) || 0;
+        const feeScore =
+          settings.totalMonths > 0
+            ? Math.min(monthsPaid / settings.totalMonths, 1) * 30
+            : 0;
+        const progScore =
+          settings.totalPrograms > 0
+            ? Math.min(programs / settings.totalPrograms, 1) * 50
+            : 0;
+        const addScore = (added / maxAdded) * 20;
+        return sum + (feeScore + progScore + addScore);
+      }, 0) / members.length;
+    if (summaryEl)
+      summaryEl.textContent = `মোট ${
+        members.length
+      } জনের গড় ওভারঅল পারফরম্যান্স: ${Math.round(avg)}%`;
   }
 
   /* ---------- Admin panel ---------- */
@@ -733,17 +992,24 @@ function normalizePhotoUrl(raw) {
       const pass = loginForm.password.value;
       let ok = true;
       if (!validateRequired(loginForm.phone, "মোবাইল নম্বর লিখুন")) ok = false;
-      if (!validateRequired(loginForm.password, "পাসওয়ার্ড লিখুন")) ok = false;
+      if (!validateRequired(loginForm.password, "পাসওয়ার্ড লিখুন"))
+        ok = false;
       if (!ok) return;
       if (phone === ADMIN_PHONE && pass === ADMIN_PASSWORD) {
         localStorage.setItem(LS_KEYS.adminLoggedIn, "1");
-        if (loginMsg) { loginMsg.hidden = false; loginMsg.textContent = "সফলভাবে লগইন হয়েছে।"; }
+        if (loginMsg) {
+          loginMsg.hidden = false;
+          loginMsg.textContent = "সফলভাবে লগইন হয়েছে।";
+        }
         setTimeout(showPanel, 400);
       } else {
         const wrapper = loginForm.password.closest(".field");
         const err = wrapper ? wrapper.querySelector(".field-error") : null;
         if (wrapper) wrapper.classList.add("has-error");
-        if (err) { err.hidden = false; err.textContent = "অননুমোদিত অ্যাক্সেস। সঠিক তথ্য দিন।"; }
+        if (err) {
+          err.hidden = false;
+          err.textContent = "অননুমোদিত অ্যাক্সেস। সঠিক তথ্য দিন।";
+        }
       }
     });
     const logoutBtn = $("#adminLogout");
@@ -764,7 +1030,9 @@ function normalizePhotoUrl(raw) {
         const target = btn.dataset.target;
         tabs.forEach((t) => t.classList.remove("active"));
         btn.classList.add("active");
-        panels.forEach((p) => { p.hidden = p.id !== target; });
+        panels.forEach((p) => {
+          p.hidden = p.id !== target;
+        });
       });
     });
   }
@@ -772,15 +1040,25 @@ function normalizePhotoUrl(raw) {
   function renderAdminNotices() {
     const tbody = $("#adminNoticeTbody");
     if (!tbody) return;
-    const notices = getNotices().sort((a, b) => new Date(b.date || b.createdAt) - new Date(a.date || a.createdAt));
+    const notices = getNotices().sort(
+      (a, b) =>
+        new Date(b.date || b.createdAt) - new Date(a.date || a.createdAt)
+    );
     tbody.innerHTML = "";
     if (!notices.length) {
-      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#607267">কোনো নোটিশ নেই</td></tr>';
+      tbody.innerHTML =
+        '<tr><td colspan="4" style="text-align:center;color:#607267">কোনো নোটিশ নেই</td></tr>';
       return;
     }
     notices.forEach((n) => {
       const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${n.title}</td><td>${n.category || "সাধারণ"}</td><td>${formatDate(n.date)}</td><td><button type="button" class="admin-small-btn admin-del-notice" data-id="${n.id}">মুছুন</button></td>`;
+      tr.innerHTML = `<td>${n.title}</td><td>${
+        n.category || "সাধারণ"
+      }</td><td>${formatDate(
+        n.date
+      )}</td><td><button type="button" class="admin-small-btn admin-del-notice" data-id="${
+        n.id
+      }">মুছুন</button></td>`;
       tbody.appendChild(tr);
     });
     tbody.onclick = (e) => {
@@ -803,15 +1081,27 @@ function normalizePhotoUrl(raw) {
       e.preventDefault();
       clearFieldErrors(form);
       const title = form.title.value.trim();
-      const category = form.category ? form.category.value.trim() || "সাধারণ" : "সাধারণ";
-      const date = form.date ? form.date.value || new Date().toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10);
+      const category = form.category
+        ? form.category.value.trim() || "সাধারণ"
+        : "সাধারণ";
+      const date = form.date
+        ? form.date.value || new Date().toISOString().slice(0, 10)
+        : new Date().toISOString().slice(0, 10);
       const content = form.content ? form.content.value.trim() : "";
       const important = form.important ? form.important.checked : false;
       let ok = true;
       if (!validateRequired(form.title, "শিরোনাম লিখুন")) ok = false;
       if (!ok) return;
       const notices = getNotices();
-      notices.unshift({ id: uid(), title, category, date, content, important, createdAt: new Date().toISOString() });
+      notices.unshift({
+        id: uid(),
+        title,
+        category,
+        date,
+        content,
+        important,
+        createdAt: new Date().toISOString(),
+      });
       setNotices(notices);
       form.reset();
       renderAdminNotices();
@@ -823,22 +1113,42 @@ function normalizePhotoUrl(raw) {
   function renderAdminDonors() {
     const tbody = $("#adminDonorTbody");
     if (!tbody) return;
-    const donors = getDonors().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    const donors = getDonors().sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
     tbody.innerHTML = "";
     if (!donors.length) {
-      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#607267">কোনো রক্তদাতা নেই</td></tr>';
+      tbody.innerHTML =
+        '<tr><td colspan="6" style="text-align:center;color:#607267">কোনো রক্তদাতা নেই</td></tr>';
       return;
     }
     donors.forEach((d) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td>${d.name}</td><td>${d.bloodGroup}</td><td>${[d.area, d.upazila].filter(Boolean).join(", ")}</td><td>${d.phone || ""}</td>
-        <td>${d.confirmed ? "অনুমোদিত" : "অপেক্ষমাণ"} / ${d.available === false ? "অনুপলব্ধ" : "প্রস্তুত"}</td>
+        <td>${d.name}</td><td>${d.bloodGroup}</td><td>${[
+        d.area,
+        d.upazila,
+      ]
+        .filter(Boolean)
+        .join(", ")}</td><td>${d.phone || ""}</td>
+        <td>${d.confirmed ? "অনুমোদিত" : "অপেক্ষমাণ"} / ${
+        d.available === false ? "অনুপলব্ধ" : "প্রস্তুত"
+      }</td>
         <td>
-          ${!d.confirmed ? `<button type="button" class="admin-small-btn admin-confirm-donor" data-id="${d.id}">অনুমোদন</button>` : ""}
-          <button type="button" class="admin-small-btn admin-toggle-availability" data-id="${d.id}">উপলভ্য / স্থগিত</button>
-          <button type="button" class="admin-small-btn admin-edit-donor" data-id="${d.id}">এডিট</button>
-          <button type="button" class="admin-small-btn admin-del-donor" data-id="${d.id}">ডিলিট</button>
+          ${
+            !d.confirmed
+              ? `<button type="button" class="admin-small-btn admin-confirm-donor" data-id="${d.id}">অনুমোদন</button>`
+              : ""
+          }
+          <button type="button" class="admin-small-btn admin-toggle-availability" data-id="${
+            d.id
+          }">উপলভ্য / স্থগিত</button>
+          <button type="button" class="admin-small-btn admin-edit-donor" data-id="${
+            d.id
+          }">এডিট</button>
+          <button type="button" class="admin-small-btn admin-del-donor" data-id="${
+            d.id
+          }">ডিলিট</button>
         </td>`;
       tbody.appendChild(tr);
     });
@@ -849,24 +1159,49 @@ function normalizePhotoUrl(raw) {
       const idx = donorsNow.findIndex((d) => d.id === id);
       if (idx === -1) return;
       if (e.target.classList.contains("admin-confirm-donor")) {
-        donorsNow[idx].confirmed = true; setDonors(donorsNow); renderAdminDonors(); initQuickStats();
-      } else if (e.target.classList.contains("admin-toggle-availability")) {
-        donorsNow[idx].available = donorsNow[idx].available === false; setDonors(donorsNow); renderAdminDonors();
+        donorsNow[idx].confirmed = true;
+        setDonors(donorsNow);
+        renderAdminDonors();
+        initQuickStats();
+      } else if (
+        e.target.classList.contains("admin-toggle-availability")
+      ) {
+        donorsNow[idx].available = donorsNow[idx].available === false;
+        setDonors(donorsNow);
+        renderAdminDonors();
       } else if (e.target.classList.contains("admin-edit-donor")) {
         const d = donorsNow[idx];
-        const name = prompt("নাম:", d.name); if (name === null) return;
-        const bg = prompt("রক্তের গ্রুপ (যেমন O+):", d.bloodGroup); if (bg === null) return;
-        const phone = prompt("মোবাইল:", d.phone || ""); if (phone === null) return;
-        const district = prompt("জেলা:", d.district || ""); if (district === null) return;
-        const upazila = prompt("উপজেলা:", d.upazila || ""); if (upazila === null) return;
-        const area = prompt("এলাকা / গ্রাম:", d.area || ""); if (area === null) return;
-        const lastDonation = prompt("শেষ রক্তদানের তারিখ (YYYY-MM-DD, ফাঁকা রাখলে অজানা):", d.lastDonation || "");
-        d.name = name.trim(); d.bloodGroup = bg.trim(); d.phone = phone.trim(); d.district = district.trim(); d.upazila = upazila.trim(); d.area = area.trim(); d.lastDonation = (lastDonation || "").trim();
-        setDonors(donorsNow); renderAdminDonors();
+        const name = prompt("নাম:", d.name);
+        if (name === null) return;
+        const bg = prompt("রক্তের গ্রুপ (যেমন O+):", d.bloodGroup);
+        if (bg === null) return;
+        const phone = prompt("মোবাইল:", d.phone || "");
+        if (phone === null) return;
+        const district = prompt("জেলা:", d.district || "");
+        if (district === null) return;
+        const upazila = prompt("উপজেলা:", d.upazila || "");
+        if (upazila === null) return;
+        const area = prompt("এলাকা / গ্রাম:", d.area || "");
+        if (area === null) return;
+        const lastDonation = prompt(
+          "শেষ রক্তদানের তারিখ (YYYY-MM-DD, ফাঁকা রাখলে অজানা):",
+          d.lastDonation || ""
+        );
+        d.name = name.trim();
+        d.bloodGroup = bg.trim();
+        d.phone = phone.trim();
+        d.district = district.trim();
+        d.upazila = upazila.trim();
+        d.area = area.trim();
+        d.lastDonation = (lastDonation || "").trim();
+        setDonors(donorsNow);
+        renderAdminDonors();
       } else if (e.target.classList.contains("admin-del-donor")) {
         if (!confirm("এই দাতা তথ্য ডিলিট করতে চান?")) return;
         const filtered = donorsNow.filter((x) => x.id !== id);
-        setDonors(filtered); renderAdminDonors(); initQuickStats();
+        setDonors(filtered);
+        renderAdminDonors();
+        initQuickStats();
       }
     };
   }
@@ -874,18 +1209,29 @@ function normalizePhotoUrl(raw) {
   function renderAdminRequests() {
     const tbody = $("#adminRequestTbody");
     if (!tbody) return;
-    const list = getRequests().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    const list = getRequests().sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
     tbody.innerHTML = "";
     if (!list.length) {
-      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#607267">কোনো আবেদন নেই</td></tr>';
+      tbody.innerHTML =
+        '<tr><td colspan="7" style="text-align:center;color:#607267">কোনো আবেদন নেই</td></tr>';
       return;
     }
     list.forEach((r) => {
       const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${r.patientName}</td><td>${r.bloodGroup}</td><td>${r.bags}</td><td>${formatDate(r.neededDate)}</td><td>${r.hospital}</td><td>${r.status}</td>
-        <td><button type="button" class="admin-small-btn admin-status-req" data-id="${r.id}">স্ট্যাটাস</button>
-        <button type="button" class="admin-small-btn admin-edit-req" data-id="${r.id}">এডিট</button>
-        <button type="button" class="admin-small-btn admin-del-req" data-id="${r.id}">ডিলিট</button></td>`;
+      tr.innerHTML = `<td>${r.patientName}</td><td>${r.bloodGroup}</td><td>${r.bags}</td><td>${formatDate(
+        r.neededDate
+      )}</td><td>${r.hospital}</td><td>${r.status}</td>
+        <td><button type="button" class="admin-small-btn admin-status-req" data-id="${
+          r.id
+        }">স্ট্যাটাস</button>
+        <button type="button" class="admin-small-btn admin-edit-req" data-id="${
+          r.id
+        }">এডিট</button>
+        <button type="button" class="admin-small-btn admin-del-req" data-id="${
+          r.id
+        }">ডিলিট</button></td>`;
       tbody.appendChild(tr);
     });
     tbody.onclick = (e) => {
@@ -896,22 +1242,48 @@ function normalizePhotoUrl(raw) {
       if (idx === -1) return;
       const r = listNow[idx];
       if (e.target.classList.contains("admin-status-req")) {
-        const st = prompt("স্ট্যাটাস লিখুন (pending / fulfilled / cancelled):", r.status || "pending");
-        if (!st) return; r.status = st.trim(); setRequests(listNow); renderAdminRequests();
+        const st = prompt(
+          "স্ট্যাটাস লিখুন (pending / fulfilled / cancelled):",
+          r.status || "pending"
+        );
+        if (!st) return;
+        r.status = st.trim();
+        setRequests(listNow);
+        renderAdminRequests();
       } else if (e.target.classList.contains("admin-edit-req")) {
-        const patientName = prompt("রোগীর নাম:", r.patientName); if (patientName === null) return;
-        const bg = prompt("রক্তের গ্রুপ:", r.bloodGroup); if (bg === null) return;
-        const bags = prompt("ব্যাগ সংখ্যা:", r.bags); if (bags === null) return;
-        const nd = prompt("কবে প্রয়োজন (YYYY-MM-DD):", r.neededDate || ""); if (nd === null) return;
-        const hospital = prompt("হাসপাতাল / স্থান:", r.hospital || ""); if (hospital === null) return;
-        const phone = prompt("ফোন:", r.phone || ""); if (phone === null) return;
-        const details = prompt("অতিরিক্ত তথ্য:", r.details || ""); if (details === null) return;
-        Object.assign(r, { patientName: patientName.trim(), bloodGroup: bg.trim(), bags: Number(bags) || 1, neededDate: nd.trim(), hospital: hospital.trim(), phone: phone.trim(), details: details.trim() });
-        setRequests(listNow); renderAdminRequests();
+        const patientName = prompt("রোগীর নাম:", r.patientName);
+        if (patientName === null) return;
+        const bg = prompt("রক্তের গ্রুপ:", r.bloodGroup);
+        if (bg === null) return;
+        const bags = prompt("ব্যাগ সংখ্যা:", r.bags);
+        if (bags === null) return;
+        const nd = prompt(
+          "কবে প্রয়োজন (YYYY-MM-DD):",
+          r.neededDate || ""
+        );
+        if (nd === null) return;
+        const hospital = prompt("হাসপাতাল / স্থান:", r.hospital || "");
+        if (hospital === null) return;
+        const phone = prompt("ফোন:", r.phone || "");
+        if (phone === null) return;
+        const details = prompt("অতিরিক্ত তথ্য:", r.details || "");
+        if (details === null) return;
+        Object.assign(r, {
+          patientName: patientName.trim(),
+          bloodGroup: bg.trim(),
+          bags: Number(bags) || 1,
+          neededDate: nd.trim(),
+          hospital: hospital.trim(),
+          phone: phone.trim(),
+          details: details.trim(),
+        });
+        setRequests(listNow);
+        renderAdminRequests();
       } else if (e.target.classList.contains("admin-del-req")) {
         if (!confirm("এই আবেদনটি ডিলিট করতে চান?")) return;
         const filtered = listNow.filter((x) => x.id !== id);
-        setRequests(filtered); renderAdminRequests();
+        setRequests(filtered);
+        renderAdminRequests();
       }
     };
   }
@@ -922,13 +1294,18 @@ function normalizePhotoUrl(raw) {
     const list = getCommitteeMembers();
     tbody.innerHTML = "";
     if (!list.length) {
-      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#607267">কোনো সদস্য নেই</td></tr>';
+      tbody.innerHTML =
+        '<tr><td colspan="4" style="text-align:center;color:#607267">কোনো সদস্য নেই</td></tr>';
       return;
     }
     list.forEach((m) => {
       const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${m.name}</td><td>${m.position || ""}</td><td>${m.photoUrl ? "ছবি যুক্ত" : "—"}</td>
-        <td><button type="button" class="admin-small-btn admin-del-member" data-id="${m.id}">ডিলিট</button></td>`;
+      tr.innerHTML = `<td>${m.name}</td><td>${
+        m.position || ""
+      }</td><td>${m.photoUrl ? "ছবি যুক্ত" : "—"}</td>
+        <td><button type="button" class="admin-small-btn admin-del-member" data-id="${
+          m.id
+        }">ডিলিট</button></td>`;
       tbody.appendChild(tr);
     });
     tbody.onclick = (e) => {
@@ -970,19 +1347,40 @@ function normalizePhotoUrl(raw) {
     const memberForm = $("#adminPerfMemberForm");
     const currentSettings = getPerfSettings();
     if (settingsForm) {
-      if (settingsForm.committeeName) settingsForm.committeeName.value = currentSettings.committeeName || "";
-      if (settingsForm.totalMonths) settingsForm.totalMonths.value = currentSettings.totalMonths || 0;
-      if (settingsForm.totalPrograms) settingsForm.totalPrograms.value = currentSettings.totalPrograms || 0;
-      if (settingsForm.introText) settingsForm.introText.value = currentSettings.introText || "";
+      if (settingsForm.committeeName)
+        settingsForm.committeeName.value =
+          currentSettings.committeeName || "";
+      if (settingsForm.totalMonths)
+        settingsForm.totalMonths.value = currentSettings.totalMonths || 0;
+      if (settingsForm.totalPrograms)
+        settingsForm.totalPrograms.value =
+          currentSettings.totalPrograms || 0;
+      if (settingsForm.introText)
+        settingsForm.introText.value = currentSettings.introText || "";
       settingsForm.addEventListener("submit", (e) => {
         e.preventDefault();
         clearFieldErrors(settingsForm);
-        const committeeName = settingsForm.committeeName ? settingsForm.committeeName.value.trim() : "চলমান কমিটি";
-        const totalMonths = settingsForm.totalMonths ? Number(settingsForm.totalMonths.value) || 0 : 0;
-        const totalPrograms = settingsForm.totalPrograms ? Number(settingsForm.totalPrograms.value) || 0 : 0;
-        const introText = settingsForm.introText ? settingsForm.introText.value.trim() : "";
+        const committeeName = settingsForm.committeeName
+          ? settingsForm.committeeName.value.trim() || "চলমান কমিটি"
+          : "চলমান কমিটি";
+        const totalMonths = settingsForm.totalMonths
+          ? Number(settingsForm.totalMonths.value) || 0
+          : 0;
+        const totalPrograms = settingsForm.totalPrograms
+          ? Number(settingsForm.totalPrograms.value) || 0
+          : 0;
+        const introText = settingsForm.introText
+          ? settingsForm.introText.value.trim()
+          : "";
         let ok = true;
-        if (settingsForm.committeeName && !validateRequired(settingsForm.committeeName, "কমিটির নাম লিখুন")) ok = false;
+        if (
+          settingsForm.committeeName &&
+          !validateRequired(
+            settingsForm.committeeName,
+            "কমিটির নাম লিখুন"
+          )
+        )
+          ok = false;
         if (!ok) return;
         setPerfSettings({ committeeName, totalMonths, totalPrograms, introText });
         alert("পারফরম্যান্স সেটিংস সংরক্ষণ করা হয়েছে।");
@@ -1002,7 +1400,14 @@ function normalizePhotoUrl(raw) {
         if (!validateRequired(memberForm.position, "পদবী লিখুন")) ok = false;
         if (!ok) return;
         const list = getPerfMembers();
-        list.push({ id: uid(), name, position, monthsPaid, programs, membersAdded });
+        list.push({
+          id: uid(),
+          name,
+          position,
+          monthsPaid,
+          programs,
+          membersAdded,
+        });
         setPerfMembers(list);
         memberForm.reset();
         renderAdminPerfMembers();
@@ -1028,7 +1433,8 @@ function normalizePhotoUrl(raw) {
     const list = getPerfMembers();
     tbody.innerHTML = "";
     if (!list.length) {
-      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#607267">কোনো ডাটা নেই</td></tr>';
+      tbody.innerHTML =
+        '<tr><td colspan="5" style="text-align:center;color:#607267">কোনো ডাটা নেই</td></tr>';
       return;
     }
     list.forEach((m) => {
@@ -1042,7 +1448,11 @@ function normalizePhotoUrl(raw) {
   /* ---------- Init on DOM ready ---------- */
   document.addEventListener("DOMContentLoaded", () => {
     const safeRun = (name, fn) => {
-      try { fn(); } catch (err) { console.error(name, err); }
+      try {
+        fn();
+      } catch (err) {
+        console.error(name, err);
+      }
     };
     safeRun("seedInitialData", seedInitialData);
     safeRun("initCurrentYear", initCurrentYear);
