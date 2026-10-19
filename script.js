@@ -19,8 +19,8 @@
     adminLoggedIn: "prottoy_admin_logged_in",
   };
 
-  const ADMIN_PHONE = "01700000000";
-  const ADMIN_PASSWORD = "prottoy2020";
+  const ADMIN_PHONE = "prottoyorg.bd@gmail.com";
+  const ADMIN_PASSWORD = "prottoy1234";
 
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
