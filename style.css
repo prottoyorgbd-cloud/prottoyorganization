@@ -1287,20 +1287,3 @@ section { scroll-margin-top: 95px; }
   }
 }
 
-<!-- কমিটি সেকশন (হোম পেজ) -->
-<section class="section" id="committee">
-  <div class="container">
-    <div class="section-heading center-heading">
-      <span class="eyebrow">কমিটি</span>
-      <h2>কমিটি সদস্যবৃন্দ</h2>
-      <p>বর্তমান কমিটির নির্বাচিত কয়েকজন সদস্যের সংক্ষিপ্ত তালিকা।</p>
-    </div>
-
-    <div id="homeCommitteeList" class="committee-home-grid"></div>
-
-    <p id="homeCommitteeEmpty"
-       style="display:none; text-align:center; color:#607267; margin-top:12px;">
-      এখনো কোনো কমিটি সদস্য যোগ করা হয়নি।
-    </p>
-  </div>
-</section>
