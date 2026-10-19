@@ -724,6 +724,51 @@
     });
   }
 
+   // === Home page: show committee members on home ===
+function initHomeCommitteeSection() {
+  const listEl = document.getElementById("homeCommitteeList");
+  const emptyEl = document.getElementById("homeCommitteeEmpty");
+  if (!listEl) return; // যদি এই সেকশন না থাকে, কিছুই করব না
+
+  const members = getCommitteeMembers(); // আগের মতই localStorage থেকে
+  listEl.innerHTML = "";
+
+  if (!members || !members.length) {
+    if (emptyEl) emptyEl.style.display = "block";
+    return;
+  }
+  if (emptyEl) emptyEl.style.display = "none";
+
+  // সব সদস্যের বদলে প্রথম ৪ জন দেখাই (চাইলে limit বদলাতে পারো)
+  members.slice(0, 4).forEach((m) => {
+    const card = document.createElement("article");
+    card.className = "committee-home-card";
+
+    const name = m.name || "নাম পাওয়া যায়নি";
+    const pos = m.position || "";
+    const since = m.since || "";
+
+    let photoInner = "";
+    if (m.photoUrl) {
+      photoInner = `<img src="${m.photoUrl}" alt="${name}">`;
+    } else {
+      const initial = name.trim().charAt(0) || "";
+      photoInner = `<span>${initial}</span>`;
+    }
+
+    card.innerHTML = `
+      <div class="committee-home-photo">
+        ${photoInner}
+      </div>
+      <div class="committee-home-name">${name}</div>
+      <div class="committee-home-position">${pos}</div>
+      ${since ? `<div class="committee-home-since">দায়িত্ব গ্রহণ: ${since}</div>` : ""}
+    `;
+
+    listEl.appendChild(card);
+  });
+}
+
   /* ---------- Performance page (public) ---------- */
 function initPerformancePage() {
   const tableBody = $("#perfTableBody");
