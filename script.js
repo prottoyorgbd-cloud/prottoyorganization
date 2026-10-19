@@ -799,34 +799,40 @@
   }
 
   // === Home page: show committee members on home ===
-  function initHomeCommitteeSection() {
-    const listEl = document.getElementById("homeCommitteeList");
-    const emptyEl = document.getElementById("homeCommitteeEmpty");
-    if (!listEl) return;
-    const members = getCommitteeMembers() || [];
-    listEl.innerHTML = "";
-    if (!members.length) {
-      if (emptyEl) emptyEl.style.display = "block";
-      return;
-    }
-    if (emptyEl) emptyEl.style.display = "none";
+function initHomeCommitteeSection() {
+  const listEl = document.getElementById("homeCommitteeList");
+  const emptyEl = document.getElementById("homeCommitteeEmpty");
+  if (!listEl) return;
 
-    members.forEach((m) => {
-      const card = document.createElement("article");
-      card.className = "committee-home-card";
-      const name = m.name || "নাম পাওয়া যায়নি";
-      const pos = m.position || "";
-      const since = m.since || "";
-      const photoUrl = normalizePhotoUrl(m.photoUrl || "");
-      let photoInner = "";
-      if (photoUrl) {
-        photoInner = `<img src="${photoUrl}" alt="${name}" loading="lazy">`;
-      } else {
-        const initial = name.trim().charAt(0) || "";
-        photoInner = `<span>${initial}</span>`;
-      }
-      card.innerHTML = `
-        <div class="committee-home-photo">${photoInner}</div>
+  const members = getCommitteeMembers() || [];
+  listEl.innerHTML = "";
+
+  if (!members.length) {
+    if (emptyEl) emptyEl.style.display = "block";
+    return;
+  }
+  if (emptyEl) emptyEl.style.display = "none";
+
+  members.forEach((m) => {
+    const card = document.createElement("article");
+    card.className = "committee-home-card";
+
+    const name = m.name || "নাম পাওয়া যায়নি";
+    const pos = m.position || "";
+    const since = m.since || "";
+    const photoUrl = normalizePhotoUrl(m.photoUrl || "");
+
+    let photoInner = "";
+    if (photoUrl) {
+      photoInner = `<img src="${photoUrl}" alt="${name}" loading="lazy">`;
+    } else {
+      const initial = name.trim().charAt(0) || "";
+      photoInner = `<span>${initial}</span>`;
+    }
+
+    card.innerHTML = `
+      <div class="committee-home-photo">${photoInner}</div>
+      <div class="committee-home-text">
         <div class="committee-home-name">${name}</div>
         <div class="committee-home-position">${pos}</div>
         ${
@@ -836,10 +842,11 @@
               )} থেকে</div>`
             : ""
         }
-      `;
-      listEl.appendChild(card);
-    });
-  }
+      </div>
+    `;
+    listEl.appendChild(card);
+  });
+}
 
   /* ---------- Performance page (public) 30/50/20 ---------- */
   function initPerformancePage() {
