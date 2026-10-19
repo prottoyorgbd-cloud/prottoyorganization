@@ -1382,6 +1382,94 @@ section { scroll-margin-top: 95px; }
   .perf-result-main .perf-result-value {
     font-size: 30px;
   }
+
+  /* ================== মোবাইল হিরো ফিক্স ================== */
+@media (max-width: 620px) {
+
+  /* ১) হেডার সলিড – নিচের লেখা ভেসে উঠবে না */
+  .site-header {
+    background: #fff;
+    backdrop-filter: none;
+  }
+
+  /* ২) হিরো কার্ড এরিয়া: absolute বাদ, সোজা কলাম লেআউট */
+  .hero-card-wrap {
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .hero-logo-card {
+    position: static;
+    width: 100%;
+    transform: none;
+    padding: 18px;
+    border-radius: 26px;
+  }
+
+  .hero-logo-card img {
+    width: 150px;
+    height: 150px;
+    max-height: none;
+    margin: 0 auto;
+    object-fit: contain;
+  }
+
+  .hero-logo-card div {
+    justify-content: center;
+    padding: 12px 4px 0;
+  }
+
+  .hero-logo-card p {
+    font-size: .9rem;
+    text-align: center;
+  }
+
+  /* ৩) mini-card গুলো নিচে পাশাপাশি */
+  .mini-card {
+    position: static;
+    min-width: 0;
+    flex: 1 1 0;
+    padding: 12px 12px;
+    animation: none;
+    border-radius: 16px;
+  }
+
+  .mini-card-top,
+  .mini-card-bottom {
+    inset: auto;
+    animation: none;
+  }
+
+  .mini-card strong { font-size: .86rem; line-height: 1.3; }
+  .mini-card small  { font-size: .7rem; }
+  .mini-icon { width: 38px; height: 38px; font-size: 1.1rem; }
+
+  /* mini-card দুটোকে এক সারিতে রাখার জন্য র‍্যাপার */
+  .hero-card-wrap::after { content: none; }
+
+  /* ৪) হিরো প্যাডিং/স্পেস ছোট */
+  .hero-grid {
+    gap: 28px;
+    padding-top: 42px;
+    padding-bottom: 56px;
+  }
+  .hero h1 { font-size: 2.5rem; }
+  .hero-copy > p { font-size: .98rem; }
+  .hero-points { margin-top: 18px; }
+  .hero-actions { margin-top: 22px; }
+
+  /* ৫) ব্যাক-টু-টপ ছোট ও এক কোণায় */
+  .back-to-top {
+    width: 40px;
+    height: 40px;
+    right: 14px;
+    bottom: 14px;
+  }
+}
   .perf-result-value {
     font-size: 24px;
   }
