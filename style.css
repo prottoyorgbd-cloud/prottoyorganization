@@ -1002,6 +1002,64 @@ section { scroll-margin-top: 95px; }
   color: var(--muted);
 }
 
+/* ---------- হোম পেজ: কমিটি প্রিভিউ কার্ড ---------- */
+.committee-home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.committee-home-card {
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 10px 26px rgba(16,61,38,.05);
+}
+
+.committee-home-photo {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--green-light);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.committee-home-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.committee-home-photo span {
+  color: var(--green-dark);
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.committee-home-name {
+  font-weight: 700;
+  color: var(--green-dark);
+  font-size: .96rem;
+}
+
+.committee-home-position {
+  font-size: .84rem;
+  color: var(--muted);
+}
+
+.committee-home-since {
+  margin-top: 3px;
+  font-size: .78rem;
+  color: #8fa197;
+}
+
 /* ---------- নতুন: পারফরম্যান্স টেবিল ---------- */
 .performance-table-wrap {
   overflow-x: auto;
