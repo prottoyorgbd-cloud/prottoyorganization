@@ -1484,3 +1484,67 @@ section { scroll-margin-top: 95px; }
     gap: 10px;
   }
 }
+
+/* === Mobile specific fixes for header + hero layout === */
+@media (max-width: 620px) {
+  /* হেডারকে mobile এ solid করে দিচ্ছি যেন পেছনের লেখা দেখা না যায় */
+  .site-header {
+    background: #ffffff;
+    backdrop-filter: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  /* Hero section একটু compact */
+  .hero {
+    padding-top: 80px;   /* আপনার header height অনুযায়ী সামঞ্জস্য করতে পারবেন */
+    padding-bottom: 40px;
+  }
+
+  .hero-grid {
+    row-gap: 28px;
+  }
+
+  /* Hero card ডানদিকে ছোট করে সেন্টারে নিয়ে আসা */
+  .hero-card-wrap {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .hero-logo-card {
+    padding: 14px 16px;
+    border-radius: 18px;
+  }
+
+  .hero-logo-card .hero-spin {
+    width: 80px;
+    height: 80px;
+  }
+
+  /* ব্যাকগ্রাউন্ড শেপগুলো একটু হালকা যেন mobile এ বেশি ভিড় না লাগে */
+  .hero-shape {
+    opacity: 0.18;
+  }
+
+  /* নতুন wrapper: mobile এ mini-card গুলোকে overlap না করে নিচে সাজাবে */
+  .hero-mini-row {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .hero-mini-row .mini-card {
+    position: static;   /* আগের absolute পজিশনিং অফ */
+    transform: none;
+    top: auto;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    width: 100%;
+    margin: 0;
+  }
+
+  .hero-mini-row .mini-icon {
+    font-size: 18px;
+  }
+}
