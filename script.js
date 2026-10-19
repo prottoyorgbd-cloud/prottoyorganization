@@ -1480,3 +1480,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initAdminPage();
   initHomeCommitteeSection(); // ← নতুন এই লাইন
 });
+
+   // IIFE close
+})();
