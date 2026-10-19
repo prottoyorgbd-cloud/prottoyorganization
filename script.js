@@ -68,25 +68,31 @@
   };
 
   // Google Drive শেয়ার লিংক -> ডাইরেক্ট ইমেজ লিংক
-  function normalizePhotoUrl(raw) {
-    if (!raw) return "";
-    const url = String(raw).trim();
-    if (!url) return "";
-    if (url.includes("drive.google.com")) {
-      let fileId = "";
-      const m1 = url.match(/\/d\/([^/]+)\//);
-      if (m1 && m1[1]) {
-        fileId = m1[1];
-      } else {
-        const m2 = url.match(/[?&]id=([^&]+)/);
-        if (m2 && m2[1]) fileId = m2[1];
-      }
-      if (fileId) {
-        return `https://drive.google.com/uc?export=view&id=${fileId}`;
-      }
-    }
-    return url;
+function normalizePhotoUrl(raw) {
+  if (!raw) return "";
+  raw = raw.trim();
+
+  // যদি আগেই সরাসরি ইমেজ লিংক বা data URL হয়, 그대로 রাখি
+  if (
+    /^data:image\//.test(raw) ||
+    /\.(jpe?g|png|gif|webp|avif)(\?.*)?$/i.test(raw)
+  ) {
+    return raw;
   }
+
+  // Google Drive: বিভিন্ন ধরনের লিংক থেকে FILE_ID বের করা
+  const driveMatch =
+    raw.match(/\/d\/([a-zA-Z0-9_-]+)/) ||      // .../file/d/FILE_ID/view
+    raw.match(/[?&]id=([a-zA-Z0-9_-]+)/);      // ...open?id=FILE_ID বা download?id=FILE_ID
+
+  if (driveMatch) {
+    const fileId = driveMatch[1];
+    // থাম্বনেইল এন্ডপয়েন্ট ব্যবহার, যেটা সবসময় সরাসরি ইমেজ দেয়
+    return `https://drive.google.com/thumbnail?id=${fileId}&sz=w300-h300`;
+  }
+
+  return raw;
+}
 
   /* ---------- Seed default data (once) ---------- */
   const DEFAULT_NOTICES = [
