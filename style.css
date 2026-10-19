@@ -1474,3 +1474,13 @@ section { scroll-margin-top: 95px; }
     font-size: 24px;
   }
 }
+
+
+.hero-mini-row { display: contents; }
+
+@media (max-width: 620px) {
+  .hero-mini-row {
+    display: flex;
+    gap: 10px;
+  }
+}
